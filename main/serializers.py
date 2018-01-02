@@ -1,6 +1,15 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from .models import Student, Course, Group, TypeForm, Answer
+from .models import Student, Course, Group, TypeForm, Answer, Question
+
+class QuestionSerializer(serializers.ModelSerializer):
+    """
+    Serializer for model Question
+    """
+    class Meta:
+        model = Question
+        fields = ('position', 'resume', 'label', 'obligatory', 'type_question',
+         'type_data', 'isSub', 'parentsQuestionPosition', 'parentsquestionsValue')
 
 class StudentSerializer(serializers.ModelSerializer):
     """
@@ -10,13 +19,6 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = ('ldap',)
 
-class TypeFormSerializer(serializers.ModelSerializer):
-    """
-    Serializer for model TypeForm
-    """
-    class Meta:
-        model = TypeForm
-        fields = ('name', 'form')
 
 class CourseSerializer(serializers.ModelSerializer):
     """

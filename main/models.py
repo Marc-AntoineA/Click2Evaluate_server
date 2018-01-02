@@ -4,12 +4,26 @@ from django.utils import timezone
 # A course (= id + dates + typeform + ...) is followed that many students wo follow many courses
 # An answer is made by a student for one course he follow
 
+
 class TypeForm(models.Model):
     name = models.CharField(max_length = 100) # e.g. "Classique"
-    form = models.TextField()# the questions and for each question many informations (JSON string)
-
     def __str__(self):
         return self.name
+
+class Question(models.Model):
+    survey = models.ForeignKey(TypeForm, on_delete = models.CASCADE)
+    position = models.IntegerField()
+    resume = models.CharField(max_length = 100)
+    label = models.CharField(max_length = 300)
+    obligatory = models.BooleanField(default = False)
+    type_question = models.CharField(max_length = 50)
+    type_data = models.CharField(max_length = 400)
+    isSub = models.BooleanField(max_length = 50)
+    parentsQuestionPosition = models.IntegerField(default = 0)
+    parentsquestionsValue = models.IntegerField(default = 0)
+
+    def __str__(self):
+        return self.label
 
 class Student(models.Model):
     ldap = models.CharField(max_length = 100) # e.g. "andre.dupont@enpc.fr"
@@ -44,7 +58,7 @@ class Answer(models.Model):
     group = models.ForeignKey(Group, on_delete = models.CASCADE)
     answered = models.BooleanField(default = False) # True iff student answered course
     answer = models.TextField(default = "", blank = True) # all the answers in a JSON string
-    submissionDate = models.DateTimeField(default = timezone.now(), blank = True)
+    submissionDate = models.DateTimeField(default = timezone.now, blank = True)
 
     def __str__(self):
         return str(self.student) + " / " + str(self.group)

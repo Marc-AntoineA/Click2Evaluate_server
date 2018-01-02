@@ -1,18 +1,22 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
-from .models import Student, Course, Answer, TypeForm, Group
-from .serializers import StudentSerializer, CourseSerializer, AnswerSerializer, TypeFormSerializer, GroupSerializer
+from .models import Student, Course, Answer, TypeForm, Group, Question
+from .serializers import StudentSerializer, CourseSerializer, AnswerSerializer, GroupSerializer, QuestionSerializer
+from rest_framework.renderers import TemplateHTMLRenderer
 
 
-# List all students or create a new one
-class StudentsList(APIView):
-    def get(self, request, format = None):
-        students = Student.objects.all()
-        serializer = StudentSerializer(students, many = True)
-        return Response(serializer.data)
+# ListAPIView provides a generic view for read-only
+# represent a collection of model instances
+class StudentsList(ListAPIView):
+    """
+    List all students
+    """
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
 
 class AnswersStudentList(APIView):
     """
@@ -23,17 +27,11 @@ class AnswersStudentList(APIView):
         serializer = AnswerSerializer(answers, many = True)
         return Response(serializer.data)
 
-class TypeFormDetail(APIView):
+class TypeForm(APIView):
     """
-    Return the Typeform corresponding to a name
+    Return all questions from a typeform corresponding to a name
     """
-    def get_object(self, name):
-        try:
-            return TypeForm.objects.get(name = name)
-        except:
-            raise Http404
-
     def get(self, request, name, format = None):
-        typeForm = self.get_object(name)
-        serializer = TypeFormSerializer(typeForm)
+        typeForm = Question.objects.filter(survey__name = name)
+        serializer = QuestionSerializer(typeForm, many = True)
         return Response(serializer.data)

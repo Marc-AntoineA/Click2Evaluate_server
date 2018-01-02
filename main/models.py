@@ -6,14 +6,14 @@ from django.utils import timezone
 
 
 class TypeForm(models.Model):
-    name = models.CharField(max_length = 100) # e.g. "Classique"
+    name = models.CharField(max_length = 100, unique = True) # e.g. "Classique"
     def __str__(self):
         return self.name
 
 class Question(models.Model):
-    survey = models.ForeignKey(TypeForm, on_delete = models.CASCADE)
+    typeForm = models.ForeignKey(TypeForm, on_delete = models.CASCADE)
     position = models.IntegerField()
-    resume = models.CharField(max_length = 100)
+    summary = models.CharField(max_length = 100)
     label = models.CharField(max_length = 300)
     obligatory = models.BooleanField(default = False)
     type_question = models.CharField(max_length = 50)
@@ -26,14 +26,14 @@ class Question(models.Model):
         return self.label
 
 class Student(models.Model):
-    ldap = models.CharField(max_length = 100) # e.g. "andre.dupont@enpc.fr"
+    ldap = models.CharField(max_length = 100, unique = True) # e.g. "andre.dupont@enpc.fr"
 
     def __str__(self):
         return self.ldap
 
 class Course(models.Model):
-    id_course = models.CharField(max_length = 10)   # e.g. "TDLOG"
-    label = models.CharField(max_length = 100) # e.g "Techniques de développement logiciel"
+    id_course = models.CharField(max_length = 10, unique=True)   # e.g. "TDLOG"
+    label = models.CharField(max_length = 100, unique = True) # e.g "Techniques de développement logiciel"
                                                     # group by group separated by ;
                                                     # (e.g. "andre.dupont@enpc.fr;louis.durand@enpc.fr"
     commissionsDate = models.DateTimeField()        # last day to submit a new answer
@@ -53,12 +53,19 @@ class Group(models.Model):
         return str(self.course) + " : " + str(self.number)
 
 
-class Answer(models.Model):
+class Survey(models.Model):
     student = models.ForeignKey(Student, on_delete = models.CASCADE)
     group = models.ForeignKey(Group, on_delete = models.CASCADE)
     answered = models.BooleanField(default = False) # True iff student answered course
-    answer = models.TextField(default = "", blank = True) # all the answers in a JSON string
     submissionDate = models.DateTimeField(default = timezone.now, blank = True)
 
     def __str__(self):
         return str(self.student) + " / " + str(self.group)
+
+class QuestionWithAnswer(models.Model):
+    question = models.ForeignKey(Question, on_delete = models.CASCADE)
+    survey = models.ForeignKey(Survey, on_delete = models.CASCADE)
+    answer = models.CharField(max_length = 400, blank = True, default ="")
+
+    def __str__(self):
+        return str(self.question)

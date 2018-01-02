@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from .models import Student, Course, Group, TypeForm, Answer, Question
+from .models import Student, Course, Group, TypeForm, Survey, Question, QuestionWithAnswer
 
 class QuestionSerializer(serializers.ModelSerializer):
     """
@@ -8,7 +8,7 @@ class QuestionSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Question
-        fields = ('position', 'resume', 'label', 'obligatory', 'type_question',
+        fields = ('id','position', 'summary', 'label', 'obligatory', 'type_question',
          'type_data', 'isSub', 'parentsQuestionPosition', 'parentsquestionsValue')
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -18,7 +18,6 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ('ldap',)
-
 
 class CourseSerializer(serializers.ModelSerializer):
     """
@@ -38,9 +37,9 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = ('course_id', 'number', 'delegate')
 
-class AnswerSerializer(serializers.ModelSerializer):
+class SurveySerializer(serializers.ModelSerializer):
     """
-    Serializer for model Answer with ForeignKeys
+    Serializer for model Survey with ForeignKeys
     """
     id_course = serializers.CharField(source = 'group.course.id_course')
     label = serializers.CharField(source = 'group.course.label')
@@ -51,5 +50,14 @@ class AnswerSerializer(serializers.ModelSerializer):
     group = serializers.IntegerField(source = 'group.number')
 
     class Meta:
-        model = Answer
-        fields = ('id_course', 'label', 'commissionsDate', 'availableDate', 'typeForm', 'delegate', 'group', 'answered', 'answer', 'submissionDate')
+        model = Survey
+        fields = ('id', 'id_course', 'label', 'commissionsDate', 'availableDate', 'typeForm', 'delegate', 'group', 'answered', 'submissionDate')
+
+class QuestionWithAnswerSerializer(serializers.ModelSerializer):
+    """
+    Serializer for model QuestionWithAnswer
+    """
+    
+    class Meta:
+        model= QuestionWithAnswer
+        fields = ('answer',)

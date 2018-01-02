@@ -1,11 +1,12 @@
 from django.db import models
+from django.utils import timezone
 
 # A course (= id + dates + typeform + ...) is followed that many students wo follow many courses
 # An answer is made by a student for one course he follow
 
 class TypeForm(models.Model):
     name = models.CharField(max_length = 100) # e.g. "Classique"
-    form = models.CharField(max_length = 20000) # the questions and for each question many informations (JSON string)
+    form = models.TextField()# the questions and for each question many informations (JSON string)
 
     def __str__(self):
         return self.name
@@ -23,10 +24,11 @@ class Course(models.Model):
                                                     # (e.g. "andre.dupont@enpc.fr;louis.durand@enpc.fr"
     commissionsDate = models.DateTimeField()        # last day to submit a new answer
     availableDate = models.DateTimeField()          # first day to submnit a new answer (e.g. date of the exam)
-    typeform = models.ForeignKey(TypeForm, on_delete = models.CASCADE)  #which form is used for that course ?
+    typeForm = models.ForeignKey(TypeForm, on_delete = models.CASCADE)  #which form is used for that course ?
 
     def __str__(self):
         return self.id_course
+
 
 class Group(models.Model):
     number = models.IntegerField(default = 0)
@@ -36,12 +38,13 @@ class Group(models.Model):
     def __str__(self):
         return str(self.course) + " : " + str(self.number)
 
+
 class Answer(models.Model):
     student = models.ForeignKey(Student, on_delete = models.CASCADE)
     group = models.ForeignKey(Group, on_delete = models.CASCADE)
     answered = models.BooleanField(default = False) # True iff student answered course
-    answer = models.CharField(default = "", max_length = 20000) # all the answers in a JSON string
-
+    answer = models.TextField(default = "", blank = True) # all the answers in a JSON string
+    submissionDate = models.DateTimeField(default = timezone.now(), blank = True)
 
     def __str__(self):
         return str(self.student) + " / " + str(self.group)

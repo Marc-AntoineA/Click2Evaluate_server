@@ -59,13 +59,33 @@ class Answers(APIView):
         return Response(serializer.data)
 
     def put(self, request, surveyId, questionId):
-        # TODO update date and 'answered' in survey
         qwa = self.get_object(surveyId, questionId)
         serializer = QuestionWithAnswerSerializer(qwa, data = request.data)
         if serializer.is_valid():
             serializer.save()
+            query_srv = Survey.objects.get(id = surveyId)
+            query_srv.just_answered()
             return Response(serializer.data)
         return Response(serializers.errors, status = status.HTTP_400_BAD_REQUEST)
+
+    def post(self, request, surveyId, questionId):
+        qwa = None
+        query_srv = Survey.objects.get(id = surveyId)
+        try:
+            qwa = self.get_object(surveyId, questionId)
+        except:
+
+            query_qst = Question.objects.get(id = questionId)
+            qwa = QuestionWithAnswer(survey = query_srv, question = query_qst)
+            qwa.save()
+
+        print(qwa)
+        serializer = QuestionWithAnswerSerializer(qwa, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            query_srv.just_answered()
+            return Response(serializer.data)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 def update_database(request, format = None):
     with open("data/data_students.json") as json_data_students:
@@ -133,11 +153,5 @@ def update_database(request, format = None):
                     query_srv = Survey(student = query_stdt, group = query_grp)
                     query_srv.save()
 
-                    # Creating the Answers
-                    typeForm_name = query_srv.group.course.typeForm.name
-                    query_qst = Question.objects.filter(typeForm__name = typeForm_name)
-                    for q in query_qst:
-                        query_q = Question(question = q, survey = query_srv)
-                        query_q.save()
                 except:
                     pass

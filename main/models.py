@@ -72,6 +72,12 @@ class Survey(models.Model):
     def __str__(self):
         return str(self.student) + " / " + str(self.group)
 
+    def just_answered(self):
+        print(self)
+        self.answered = True
+        self.submissionDate = timezone.now()
+        self.save()
+
 class QuestionWithAnswer(models.Model):
     question = models.ForeignKey(Question, on_delete = models.CASCADE)
     survey = models.ForeignKey(Survey, on_delete = models.CASCADE)

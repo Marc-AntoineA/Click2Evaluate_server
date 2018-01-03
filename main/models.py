@@ -7,6 +7,8 @@ from django.utils import timezone
 
 class TypeForm(models.Model):
     name = models.CharField(max_length = 100, unique = True) # e.g. "Classique"
+    description = models.TextField(blank = True)
+
     def __str__(self):
         return self.name
 
@@ -14,10 +16,11 @@ class Question(models.Model):
     typeForm = models.ForeignKey(TypeForm, on_delete = models.CASCADE)
     position = models.IntegerField()
     summary = models.CharField(max_length = 100)
+    title = models.CharField(max_length = 100)
     label = models.CharField(max_length = 300)
     obligatory = models.BooleanField(default = False)
     type_question = models.CharField(max_length = 50)
-    type_data = models.CharField(max_length = 400)
+    type_data = models.CharField(max_length = 400, blank = True)
     isSub = models.BooleanField(max_length = 50)
     parentsQuestionPosition = models.IntegerField(default = 0)
     parentsquestionsValue = models.IntegerField(default = 0)
@@ -25,15 +28,22 @@ class Question(models.Model):
     def __str__(self):
         return self.label
 
+class Departement(models.Model):
+    name = models.CharField(max_length = 100, unique = True)
+
+    def __str__(self):
+        return self.name
+
 class Student(models.Model):
     ldap = models.CharField(max_length = 100, unique = True) # e.g. "andre.dupont@enpc.fr"
-
+    mail = models.CharField(max_length = 100, unique = True)
+    departement = models.ForeignKey(Departement, on_delete = models.CASCADE)
     def __str__(self):
         return self.ldap
 
 class Course(models.Model):
     id_course = models.CharField(max_length = 10, unique=True)   # e.g. "TDLOG"
-    label = models.CharField(max_length = 100, unique = True) # e.g "Techniques de développement logiciel"
+    label = models.CharField(max_length = 100) # e.g "Techniques de développement logiciel"
                                                     # group by group separated by ;
                                                     # (e.g. "andre.dupont@enpc.fr;louis.durand@enpc.fr"
     commissionsDate = models.DateTimeField()        # last day to submit a new answer
@@ -41,7 +51,7 @@ class Course(models.Model):
     typeForm = models.ForeignKey(TypeForm, on_delete = models.CASCADE)  #which form is used for that course ?
 
     def __str__(self):
-        return self.id_course
+        return self.id_course + " : " + self.label
 
 
 class Group(models.Model):

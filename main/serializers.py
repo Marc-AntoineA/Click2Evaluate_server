@@ -15,9 +15,10 @@ class StudentSerializer(serializers.ModelSerializer):
     """
     Serializer for model Student
     """
+    departement = serializers.CharField(source = 'departement.name')
     class Meta:
         model = Student
-        fields = ('ldap',)
+        fields = ('ldap','mail', 'departement')
 
 class CourseSerializer(serializers.ModelSerializer):
     """
@@ -57,7 +58,7 @@ class QuestionWithAnswerSerializer(serializers.ModelSerializer):
     """
     Serializer for model QuestionWithAnswer
     """
-    
+
     class Meta:
         model= QuestionWithAnswer
         fields = ('answer',)

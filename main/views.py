@@ -40,6 +40,19 @@ class TypeForm_questions(APIView):
         serializer = QuestionSerializer(typeForm, many = True)
         return Response(serializer.data)
 
+class ExistsStudent(APIView):
+    """
+    Return the student if possible
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+    def get(self, request, name, format = None):
+        try:
+            student = Student.objects.get(ldap = name)
+            serializer = StudentSerializer(student)
+            return Response(serializer.data)
+        except Student.DoesNotExist:
+            return Http404
+
 class Answers(APIView):
     """
     Retrieve or update an answer instance.
@@ -79,13 +92,13 @@ class Answers(APIView):
             qwa = QuestionWithAnswer(survey = query_srv, question = query_qst)
             qwa.save()
 
-        print(qwa)
         serializer = QuestionWithAnswerSerializer(qwa, data = request.data)
         if serializer.is_valid():
             serializer.save()
             query_srv.just_answered()
             return Response(serializer.data)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
 
 def update_database(request, format = None):
     with open("data/data_students.json") as json_data_students:
@@ -144,7 +157,7 @@ def update_database(request, format = None):
                         query_grp = Group(course = query_crse, delegate = query_stdt, number = k)
                         query_grp.save()
 
-            # Link students and groups into surveys and survey and questions into QuestionWithAnswer
+            # Link students and groups into surveys
             for line in d_students:
                 try:
                     # Creating the survey

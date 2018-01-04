@@ -29,8 +29,12 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8100',
+)
 
 INSTALLED_APPS = [
+    'corsheaders',
     'rest_framework',
     'main.apps.MainConfig',
     'django.contrib.admin',
@@ -42,6 +46,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

@@ -23,7 +23,7 @@ class Question(models.Model):
     type_data = models.CharField(max_length = 400, blank = True)
     isSub = models.BooleanField(max_length = 50)
     parentsQuestionPosition = models.IntegerField(default = 0)
-    parentsquestionsValue = models.IntegerField(default = 0)
+    parentsQuestionsValue = models.IntegerField(default = 0)
 
     def __str__(self):
         return self.label

@@ -16,7 +16,7 @@ class StudentsList(ListAPIView):
     """
     List all students
     """
-    permission_classes = (permissions.IsAuthenticated,)
+    #permission_classes = (permissions.IsAuthenticated,)
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
@@ -24,7 +24,7 @@ class SurveyStudentList(APIView):
     """
     List all 'courses' followed by a specific student
     """
-    permission_classes = (permissions.IsAuthenticated,)
+    #permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, pk, format = None):
         surveys = Survey.objects.filter(student__ldap = pk)
         serializer = SurveySerializer(surveys, many = True)
@@ -34,9 +34,9 @@ class TypeForm_questions(APIView):
     """
     Return all questions from a typeform corresponding to a name
     """
-    permission_classes = (permissions.IsAuthenticated,)
+    #permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, name, format = None):
-        typeForm = Question.objects.filter(typeForm__name = name)
+        typeForm = Question.objects.filter(typeForm__name = name).order_by('position');
         serializer = QuestionSerializer(typeForm, many = True)
         return Response(serializer.data)
 
@@ -44,7 +44,7 @@ class ExistsStudent(APIView):
     """
     Return the student if possible
     """
-    permission_classes = (permissions.IsAuthenticated,)
+    #permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, name, format = None):
         try:
             student = Student.objects.get(ldap = name)
@@ -57,7 +57,7 @@ class Answers(APIView):
     """
     Retrieve or update an answer instance.
     """
-    permission_classes = (permissions.IsAuthenticated,)
+    #permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self, surveyId, questionId):
         print(surveyId, questionId)

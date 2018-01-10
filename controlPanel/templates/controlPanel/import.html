@@ -1,0 +1,162 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link href="{% static 'controlPanel/style.css' %}" rel="stylesheet">
+    <title> Click2Evaluate </title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="{% url 'controlPanel:home' %}"> Click2Evaluate </a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'controlPanel:generalView' %}"> Vue d'ensemble</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'controlPanel:exportDb' %}"> Exporter les réponses </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'controlPanel:importDb' %}"> Importer la base de données <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'controlPanel:survey' %}"> Gestion des questionnaires </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'controlPanel:project' %}"> Le projet </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="#pg"> Principe général</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#fe"> Fichier élèves </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#fc"> Fichier cours</a>
+            </li>
+          </ul>
+        </nav>
+        <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+          <h1> Importation de la base de données </h1>
+
+          <h2 id="pg"> Principe général </h2>
+            <p>
+              Vous pouvez charger sur le serveur la base de données permettant d'évaluer les cours.
+              Ces fichiers en .csv doivent respecter rigoureusement les structures rappelées ci-dessous,
+              sans quoi la base de données pourrait être entièrement corrompue.
+            </p>
+            <p>
+              Il faut noter que la base de données mets quelques minutes à être construite,
+              du fait du nombre important de données évaluées, il faut attendre le message de confirmation
+              avant de continuer les opérations sur le site internet.
+            </p>
+            <p>
+              Il est nécessaire de vider la base de données à chaque fois que vous chargez les fichiers
+              de cours et d'élèves (une fois au début de chaque semestre).
+            </p>
+
+            <div class="text-center">
+              <button type="button" class="btn btn-dark center-block"> Vider la base de données. </button>
+            </div>
+
+          <h2 id="fe"> Fichier élèves </h2>
+          <p>
+            Le fichier d'entrée doit être au format suivant, en .csv avec « ; » comme séparateur.
+            Si les libellés de module contiennent des « ; », le programme ne fonctionnera pas.<br/>
+            Noter que les colonnes et les lignes sont ici inversées pour des questions de visibilité.
+          </p>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <button class="btn btn-outline-secondary" type="button">Charger le fichier</button>
+            </div>
+            <label class="custom-file">
+              <input type="file" id="inputGroupFile03" class="custom-file-input" required>
+              <span class="custom-file-control"></span>
+            </label>
+          </div>
+
+          <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col"> Entête de ligne </th>
+                <th scope="col"> Exemple de ligne </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"> NOM </th>
+                <th> DURAND </th>
+              </tr>
+              <tr>
+                <th scope="row"> PRENOM </th>
+                <th> Jean-Eudes </th>
+              </tr>
+              <tr>
+                <th scope="row"> LOGIN_LDAP </th>
+                <th> jean-eudes.durand@enpc.fr </th>
+              </tr>
+              <tr>
+                <th scope="row"> MAIL </th>
+                <th> jean-eudes.durand@eleves.enpc.fr </th>
+              </tr>
+              <tr>
+                <th scope="row"> DEPARTEMENT </th>
+                <th> GI </th>
+              </tr>
+              <tr>
+                <th scope="row"> LIBELLE_MODULE </th>
+                <th> Allemand - débutant </th>
+              </tr>
+              <tr>
+                <th scope="row"> CODE_MODULE </th>
+                <th> ALL1 </th>
+              </tr>
+              <tr>
+                <th scope="row"> SC_GROUPE </th>
+                <th> 0 </th>
+              </tr>
+              <tr>
+                <th scope="row"> PERIODE </th>
+                <th> Hiver </th>
+              </tr>
+            </tbody>
+          <table>
+
+
+          <h2 id="fc"> Fichier cours </h2>
+
+
+        </main>
+      </div>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+  </body>
+</html>

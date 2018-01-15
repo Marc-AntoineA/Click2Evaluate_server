@@ -47,13 +47,23 @@
         <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
           <ul class="nav nav-pills flex-column">
             <li class="nav-item">
-              <a class="nav-link active" href="{% url 'controlPanel:generalView' %}"> Vue générale <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{% url 'controlPanel:generalView' %}"> Vue générale</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'controlPanel:specificView' 'module'%}"> Vue par module </a>
+              <a class="nav-link {% if type_request == 'module'%} active {% endif %}"
+                href="{% url 'controlPanel:specificView' 'module'%}">
+                  Vue par module
+                  {% if type_request == 'module'%}
+                    <span class="sr-only">(current)</span>
+                  {% endif %}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'controlPanel:specificView' 'departement'%}"> Vue par département </a>
+              <a class="nav-link {% if type_request == 'departement'%} active {% endif %}"
+                href="{% url 'controlPanel:specificView' 'departement' %}">
+                  Vue par département
+                    {% if type_request == 'departement'%}
+                      <span class="sr-only">(current)</span>
+                    {% endif %}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link"
@@ -66,18 +76,31 @@
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
           <h1> Panneau d'administration de l'évaluation des cours </h1>
 
-            <h2> Informations générales </h2>
-
-              <ul>
-                <li> Nombre d'élèves inscrits : <span class="number">{{ nb_students }}</span></li>
-                <li> Nombre total de modules : <span class="number">{{ nb_courses }}</span></li>
-                <li> Nombre total de réponses reçues : <span class="number">{{ nb_answers }}</span></li>
-                <li> Pourcentage de réponses reçues : <span class="number">{{ rate_answer }}%</span></li>
-              </ul>
-          <p>
-
-          </p>
-
+          <h2> Données relatives aux {% if type_request == 'module'%} modules {% else %} départements {% endif %} </h2>
+          <b> Attention </b>, ne sont affichés que les modules actuellement disponibles à l'évaluation
+          {% if type_request == 'departement'%}
+            <p> <b> Attention </b>, on s'intéresse ici aux département de rattachement des élèves et non des cours. </p>
+           {% endif %}
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">
+                    {% if type_request == 'module'%} Module {% else %} Département {% endif %}
+                  </th>
+                  <th scope="col"> Nombre d'élèves inscrits </th>
+                  <th scope="col"> Taux de réponse </th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in item_list %}
+                <tr>
+                  <th> {{ item.label }} </th>
+                  <th> {{ item.nb_students }} </th>
+                  <th> {{ item.rate_answer }}% </th>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
 
         </main>
       </div>

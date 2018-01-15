@@ -1,4 +1,11 @@
 /*
+ * Specific CSS
+ */
+.number {
+  font-weight: bold;
+}
+
+/*
  * Base structure
  */
 

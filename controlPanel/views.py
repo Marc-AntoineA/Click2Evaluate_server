@@ -54,10 +54,10 @@ def specific(request, type_request):
             "rate_answer": round(d.nb_answers()/float(d.nb_surveys())*100, 1)
         } for d in departements if d.nb_surveys() > 0]
 
-
     else:
         raise Http404
 
+    item_list.sort(key = lambda x: x["label"])
     data = {
         "item_list": item_list,
         "type_request": type_request,

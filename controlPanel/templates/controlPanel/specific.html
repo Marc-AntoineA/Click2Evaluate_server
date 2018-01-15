@@ -77,9 +77,12 @@
           <h1> Panneau d'administration de l'évaluation des cours </h1>
 
           <h2> Données relatives aux {% if type_request == 'module'%} modules {% else %} départements {% endif %} </h2>
-          <b> Attention </b>, ne sont affichés que les modules actuellement disponibles à l'évaluation
+
+          <p> Les résultats sont triés par ordre alphabétique du module / département </p>
           {% if type_request == 'departement'%}
             <p> <b> Attention </b>, on s'intéresse ici aux département de rattachement des élèves et non des cours. </p>
+          {% else %}
+              <b> Attention </b>, ne sont affichés que les modules actuellement disponibles à l'évaluation
            {% endif %}
             <table class="table">
               <thead class="thead-light">

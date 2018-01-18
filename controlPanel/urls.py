@@ -9,11 +9,12 @@ urlpatterns = [
     path('vueGlobale/', views.general, name = "generalView"),
     path('vueGlobale/<str:type_request>/', views.specific, name="specificView"),
     path('vueQuestions/', views.question_home, name="questionViewHome"),
-    path('vueQuestions/<int:id_q>', views.question, name="questionView"),
+    path('vueQuestions/<int:id_q>/', views.question, name="questionView"),
     path('import/', views.importDb, name = "importDb"),
     path('export/', views.exportDb, name = "exportDb"),
-    path('projet', views.project, name = "project"),
-    path('questionnaires/', views.survey, name = "survey"),
+    path('projet/', views.project, name = "project"),
+    path('questionnaires/', views.typeFormView, name = "typeForm"),
+    path('questionnaires/<int:id_q>/', views.typeFormView, name="typeFormSpecific")
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

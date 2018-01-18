@@ -30,9 +30,26 @@ def exportDb(request):
     template = loader.get_template('controlPanel/export.html')
     return HttpResponse(template.render({}, request))
 
-def survey(request):
+def typeFormView(request, id_q = None):
+    typeForm_list = TypeForm.objects.all()
+    data = {}
+    if id_q != None:
+        current = TypeForm.objects.get(id = id_q)
+
+
+        data = {
+            "current_id": current.id,
+            "current_name": current.name,
+            "current_description": current.description,
+            "typeForm_list": typeForm_list,
+        }
+    else:
+        data = {
+            "typeForm_list": typeForm_list,
+        }
     template = loader.get_template('controlPanel/survey.html')
-    return HttpResponse(template.render({}, request))
+    return HttpResponse(template.render(data, request))
+
 
 def specific(request, type_request, format = None):
     item_list = []

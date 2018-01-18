@@ -29,6 +29,9 @@ class Question(models.Model):
     def __str__(self):
         return self.label
 
+    def all_answers(self):
+        return [a.answer for a in QuestionWithAnswer.objects.filter(question = self)]
+    
 class Departement(models.Model):
     name = models.CharField(max_length = 100, unique = True)
 

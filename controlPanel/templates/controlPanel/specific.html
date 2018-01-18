@@ -1,7 +1,7 @@
 {% load static %}
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -9,6 +9,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
     <link href="{% static 'controlPanel/style.css' %}" rel="stylesheet">
     <title> Click2Evaluate </title>
   </head>
@@ -67,7 +68,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link"
-              href="{% url 'controlPanel:questionViewHome'%}"> Vue par question (satisfaction) </a>
+              href="{% url 'controlPanel:questionViewHome'%}"> Vue par question </a>
             </li>
           </ul>
         </nav>
@@ -78,28 +79,27 @@
 
           <h2> Données relatives aux {% if type_request == 'module'%} modules {% else %} départements {% endif %} </h2>
 
-          <p> Les résultats sont triés par ordre alphabétique du module / département </p>
           {% if type_request == 'departement'%}
             <p> <b> Attention </b>, on s'intéresse ici aux département de rattachement des élèves et non des cours. </p>
           {% else %}
               <b> Attention </b>, ne sont affichés que les modules actuellement disponibles à l'évaluation
            {% endif %}
-            <table class="table">
+            <table class="table" data-toggle="table" data-pagination="true" data-search="true" data-page-size="25">
               <thead class="thead-light">
                 <tr>
-                  <th scope="col">
+                  <th scope="col" data-sortable="true" data-field="id">
                     {% if type_request == 'module'%} Module {% else %} Département {% endif %}
                   </th>
-                  <th scope="col"> Nombre d'élèves inscrits </th>
-                  <th scope="col"> Taux de réponse </th>
+                  <th scope="col" data-sortable="true" data-field="number"> Nombre d'élèves inscrits </th>
+                  <th scope="col" data-sortable="true" data-field="rate"> Taux de réponse </th>
                 </tr>
               </thead>
               <tbody>
                 {% for item in item_list %}
                 <tr>
-                  <th> {{ item.label }} </th>
-                  <th> {{ item.nb_students }} </th>
-                  <th> {{ item.rate_answer }}% </th>
+                  <td> {{ item.label }} </td>
+                  <td> {{ item.nb_students }} </td>
+                  <td> {{ item.rate_answer }}% </td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -115,5 +115,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/locale/bootstrap-table-fr-BE.js"></script>
   </body>
 </html>

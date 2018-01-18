@@ -1,7 +1,7 @@
 {% load static %}
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -9,7 +9,9 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
     <link href="{% static 'controlPanel/style.css' %}" rel="stylesheet">
+    <link href="{% static 'controlPanel/hbar.css' %}" rel="stylesheet">
     <title> Click2Evaluate </title>
   </head>
   <body>
@@ -21,8 +23,8 @@
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'controlPanel:generalView' %}"> Vue d'ensemble </a>
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'controlPanel:generalView' %}"> Vue d'ensemble <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'controlPanel:exportDb' %}"> Exporter les réponses </a>
@@ -30,42 +32,72 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'controlPanel:importDb' %}"> Importer la base de données </a>
             </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'controlPanel:survey' %}"> Gestion des questionnaires <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'controlPanel:survey' %}"> Gestion des questionnaires </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'controlPanel:project' %}"> Le projet  </a>
+              <a class="nav-link" href="{% url 'controlPanel:project' %}"> Le projet </a>
             </li>
           </ul>
         </div>
       </nav>
     </header>
 
-    <!-- <div class="container-fluid">
+    <div class="container-fluid">
       <div class="row">
         <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
           <ul class="nav nav-pills flex-column">
             <li class="nav-item">
-              <a class="nav-link active" href="#"> Accueil <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{% url 'controlPanel:generalView' %}"> Vue générale</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#"> Le projet </a>
+              <a class="nav-link" href="{% url 'controlPanel:specificView' 'module'%}">
+                  Vue par module </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#"></a>
+              <a class="nav-link" href="{% url 'controlPanel:specificView' 'departement' %}">
+                  Vue par département </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Export</a>
+              <a class="nav-link active"
+              href="{% url 'controlPanel:questionViewHome'%}"> Vue par question <span class="sr-only">(current)</span></a>
             </li>
           </ul>
-        </nav>-->
+        </nav>
+
+
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-          <h1> Questionnaires </h1>
+          <h1> Panneau d'administration de l'évaluation des cours </h1>
+
+          <h2> « <i> {{ question_label }} </i> » </h2>
 
           <p>
-             Sur cette page, vous pourrez visualiser des questionnaires et les éditer.
+            <span class="number"> {{ nb_answers }} </span> personnes ont répondu à cette question, soit un taux de
+            <span class="number"> {{ rate_answer }}% </span> de réponses.
+            (Ce chiffre est faux pour les questions conditionnelles).
+            Cette question est posée dans les questionnaires : {{ list_dic }}.
           </p>
+
+          <p> Il s'agit d'une question de type : {{ question_type }} </p>
+
+          <h2> Distribution des réponses </h2>
+            <ul class="skill-list">
+              {% for key in frq_answers %}
+                <li class="skill">
+                  <h3> {{ key }} </h3>
+                  <progress class="skill-1" max="{{ max_frq }}" value="{{ 1 }}">
+                    <strong>Skill Level: {{ 1 }} %</strong>
+                  </progress>
+                </li>
+              {% endfor %}
+            </ul>
+          <!--{% if question_type == "selectOne" or question_type == "select" %}-->
+
+
+
+
+          <!-- {% endif %} -->
 
 
         </main>
@@ -78,5 +110,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/locale/bootstrap-table-fr-BE.js"></script>
   </body>
 </html>

@@ -76,29 +76,23 @@
             <span class="number"> {{ nb_answers }} </span> personnes ont répondu à cette question, soit un taux de
             <span class="number"> {{ rate_answer }}% </span> de réponses.
             (Ce chiffre est faux pour les questions conditionnelles).
-            Cette question est posée dans les questionnaires : {{ list_dic }}.
           </p>
 
-          <p> Il s'agit d'une question de type : {{ question_type }} </p>
-
-          <h2> Distribution des réponses </h2>
-            <ul class="skill-list">
-              {% for key in frq_answers %}
-                <li class="skill">
-                  <h3> {{ key }} </h3>
-                  <progress class="skill-1" max="{{ max_frq }}" value="{{ 1 }}">
-                    <strong>Skill Level: {{ 1 }} %</strong>
-                  </progress>
-                </li>
-              {% endfor %}
-            </ul>
-          <!--{% if question_type == "selectOne" or question_type == "select" %}-->
-
-
-
-
-          <!-- {% endif %} -->
-
+          {% if question_type == "selectOne" or question_type == "select" %}
+            <h2> Distribution des réponses </h2>
+              <ul class="skill-list">
+                {% for key, value in frq_answers.items %}
+                  <li class="skill">
+                    <h3> <span class="number"> [{{ value }}] </span>{{ key }} </h3>
+                    <progress class="skill-1" max="{{ max_frq }}" value="{{ value }}">
+                      <strong> Skill Level:{{ value }}%</strong>
+                    </progress>
+                  </li>
+                {% endfor %}
+              </ul>
+          {% else %}
+            Ce type de question n'est pas encore géré
+          {% endif %}
 
         </main>
       </div>

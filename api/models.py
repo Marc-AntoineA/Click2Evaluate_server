@@ -1,9 +1,12 @@
 from django.db import models
 from django.utils import timezone
 import datetime
+import json
+from django.core.validators import RegexValidator
 
 # A course (= id + dates + typeform + ...) is followed that many students wo follow many courses
 # An answer is made by a student for one course he follow
+
 
 
 class TypeForm(models.Model):
@@ -20,7 +23,13 @@ class Question(models.Model):
     title = models.CharField(max_length = 100)
     label = models.CharField(max_length = 300)
     obligatory = models.BooleanField(default = False)
-    type_question = models.CharField(max_length = 50)
+    type_question = models.CharField(max_length = 50,
+        validators=[
+            RegexValidator(
+                regex='^(select|selectOne|inline|text|number)$',
+                message='Veuillez choisir un type de question parmi select, selectOne, inline ou text',
+            ),
+        ])
     type_data = models.CharField(max_length = 400, blank = True)
     isSub = models.BooleanField(max_length = 50)
     parentsQuestionPosition = models.IntegerField(default = 0)
@@ -31,7 +40,7 @@ class Question(models.Model):
 
     def all_answers(self):
         return [a.answer for a in QuestionWithAnswer.objects.filter(question = self)]
-    
+
 class Departement(models.Model):
     name = models.CharField(max_length = 100, unique = True)
 
@@ -121,6 +130,7 @@ class Group(models.Model):
         """
         return len(Survey.objects.filter(group = self, answered = True))
 
+
 class Survey(models.Model):
     student = models.ForeignKey(Student, on_delete = models.CASCADE)
     group = models.ForeignKey(Group, on_delete = models.CASCADE)
@@ -143,3 +153,79 @@ class QuestionWithAnswer(models.Model):
 
     def __str__(self):
         return str(self.question)
+
+def create_database():
+    with open("media/student_file.json") as json_data_students:
+        with open("media/course_file.json") as json_data_courses:
+            #% Delete files in databases
+            Student.objects.all().delete()
+            Course.objects.all().delete()
+            Survey.objects.all().delete()
+            QuestionWithAnswer.objects.all().delete()
+            Group.objects.all().delete()
+            Survey.objects.all().delete()
+
+            d_students = json.load(json_data_students)
+            d_courses = json.load(json_data_courses)
+
+            # Add students and departements
+            k = 0
+            for line in d_students:
+                #Add the departement if necessary
+                dpt = line["DEPARTEMENT"]
+                query_dpt = ""
+                try:
+                    query_dpt = Departement.objects.get(name = dpt)
+
+                except Departement.DoesNotExist:
+                    query_dpt = Departement(name = dpt)
+                    query_dpt.save()
+
+                #Add the student if necessary (with mail, ldap and departement)
+                ldap = line["LOGIN_LDAP"]
+                if type(ldap) == type(" "):
+                    query_stdt = ""
+                    try:
+                        query_stdt = Student.objects.get(ldap = ldap)
+                    except Student.DoesNotExist:
+                        query_stdt = Student(ldap = ldap, mail = line["MAIL"], departement = query_dpt)
+                        query_stdt.save()
+
+            #Add courses and groups from d_courses
+            for line in d_courses :
+                #Add the course if necessary
+                id_course = line["id_course"]
+                query_crse = ""
+                try:
+                    query_crse = Course.objects.get(id_course = id_course)
+
+                except Course.DoesNotExist:
+                    # Add the course
+                    query_tF = TypeForm.objects.get(name = line['typeForm'])
+                    query_crse = Course(id_course = id_course, label = line['label'],
+                                        commissionsDate = line['commissionsDate'],
+                                        availableDate = line['availableDate'],
+                                        typeForm = query_tF)
+                    query_crse.save()
+
+                # Add the groups
+                delegates_tab = line['delegates'].split(';')
+                for k in range(len(delegates_tab)):
+                    try:
+                        query_grp = Group.objects.get(course__id_course = id_course, number = k)
+                    except Group.DoesNotExist:
+                        query_stdt = Student.objects.get(ldap = delegates_tab[k])
+                        query_grp = Group(course = query_crse, delegate = query_stdt, number = k)
+                        query_grp.save()
+
+            # Link students and groups into surveys
+            for line in d_students:
+                try:
+                    # Creating the survey
+                    query_grp = Group.objects.get(course__id_course = line['CODE_MODULE'], number = line['SC_GROUPE'])
+                    query_stdt = Student.objects.get(ldap = line['LOGIN_LDAP'])
+                    query_srv = Survey(student = query_stdt, group = query_grp)
+                    query_srv.save()
+
+                except:
+                    pass

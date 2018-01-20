@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from api.models import *
 from django.template import loader
+from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 def home(request):
@@ -23,6 +24,17 @@ def project(request):
     return HttpResponse(template.render({}, request))
 
 def importDb(request):
+    if request.method == 'POST' and request.FILES['course_file'] and request.FILES['student_file']:
+        course_file = request.FILES['course_file']
+        student_file = request.FILES['student_file']
+
+        fs = FileSystemStorage()
+        fs.delete("student_file.json")
+        fs.save("student_file.json", student_file)
+        fs.delete("course_file.json")
+        fs.save("course_file.json", course_file)
+        create_database()
+
     template = loader.get_template('controlPanel/import.html')
     return HttpResponse(template.render({}, request))
 
@@ -33,20 +45,30 @@ def exportDb(request):
 def typeFormView(request, id_q = None):
     typeForm_list = TypeForm.objects.all()
     data = {}
+
     if id_q != None:
         current = TypeForm.objects.get(id = id_q)
-
+        questions = Question.objects.filter(typeForm = current).order_by('position')
+        for q in questions:
+            q.data = q.type_data.split(";")
+        #question
+        main_questions = [q for q in questions if not(q.isSub)]
+        for q in main_questions:
+            q.sub_questions = list(Question.objects.filter(isSub = True, parentsQuestionPosition = q.position))
+            q.had_sub_questions = len(q.sub_questions) > 0
 
         data = {
             "current_id": current.id,
             "current_name": current.name,
             "current_description": current.description,
             "typeForm_list": typeForm_list,
+            "main_questions": main_questions,
         }
     else:
         data = {
             "typeForm_list": typeForm_list,
         }
+
     template = loader.get_template('controlPanel/survey.html')
     return HttpResponse(template.render(data, request))
 
@@ -119,7 +141,8 @@ def question(request, id_q):
     question = Question.objects.get(id = id_q)
 
     answers = question.all_answers()
-    answers = ["Oui", "Oui", "Oui", "Non"]
+    answers = ["Oui", "Oui", "Oui", "Non","Oui", "Peut-être"]
+
     frq_answers = {}
     max_frq = 0
 
@@ -128,8 +151,9 @@ def question(request, id_q):
             if a in frq_answers:
                 frq_answers[a] += 1
             else:
-                frq_answers[a] = 0
+                frq_answers[a] = 1
             max_frq = max(frq_answers[a], max_frq)
+
 
 
     print(frq_answers)
@@ -143,6 +167,7 @@ def question(request, id_q):
         "nb_answers": len(QuestionWithAnswer.objects.filter(question = question, survey__answered = True)),
         "rate_answer": rate_answer,
         "frq_answers": frq_answers,
+        "answers": answers,
         "max_frq": max_frq,
     }
     return HttpResponse(template.render(data, request))

@@ -64,8 +64,55 @@
 
           <h2> Questionnaire : <b> {{ current_name }} </b></h2>
             <p> <i> {{ current_description }} </i> </p>
-            
-
+            <ul>
+            {% for q in main_questions %}
+            <li>
+              <b> Q{{ q.position }} </b> : {{ q.label }}{% if q.obligatory %}*{% endif %}
+                <ul>
+                  <li> Titre : {{ q.title }} </li>
+                  <li> Résumé : {{ q.summary }} </li>
+                  <li> Type : {{ q.type_question }} </li>
+                  {% if q.type_question == 'select' or q.type_question == 'selectOne' %}
+                    <li> Choix possibles :
+                      <ul>
+                        {% for a in q.data %}
+                        <li> {{ a }} </li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% elif q.type_question == 'number' %}
+                    <li> Début, fin : {% for x in q.data %} {{ x }} {% endfor %} </li>
+                  {% endif %}
+                    {% if q.had_sub_questions > 0 %}
+                    <li> Sous-questions : </li>
+                      <ul>
+                        {% for q2 in q.sub_questions %}
+                        <li>
+                          <b> Si réponse {{ q2.parentsQuestionsValue }} </b> : {{ q2.label }}{% if q2.obligatory %}*{% endif %}
+                            <ul>
+                              <li> Titre : {{ q2.title }} </li>
+                              <li> Résumé : {{ q2.summary }} </li>
+                              <li> Type : {{ q2.type_question }} </li>
+                              {% if q2.type_question == 'select' or q2.type_question == 'selectOne' %}
+                                <li> Choix possibles :
+                                  <ul>
+                                    {% for a in q2.data %}
+                                    <li> {{ a }} </li>
+                                    {% endfor %}
+                                  </ul>
+                                </li>
+                              {% elif q.type_question == 'number' %}
+                                <li> Début, fin : {% for x in q.data %} {{ x }} {% endfor %} </li>
+                              {% endif %}
+                            </ul>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                </ul>
+            </li>
+            {% endfor %}
+            </ul>
         </main>
       </div>
     </div>

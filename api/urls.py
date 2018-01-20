@@ -9,7 +9,6 @@ urlpatterns = [
     path('typeForm/<str:name>/', views.TypeForm_questions.as_view()),
     path('answer/<int:surveyId>/<int:questionId>/', views.Answers.as_view()),
     path('student/<str:name>/', views.ExistsStudent.as_view()),
-    path('s2ip/update_database/', views.update_database),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

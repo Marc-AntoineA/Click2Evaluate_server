@@ -50,13 +50,14 @@
               <a class="nav-link" href="#pg"> Principe général</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#fe"> Fichier élèves </a>
+              <a class="nav-link" href="#fe"> Format du fichier élèves </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#fc"> Fichier cours</a>
+              <a class="nav-link" href="#fc"> Format du fichier cours</a>
             </li>
           </ul>
         </nav>
+
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
           <h1> Importation de la base de données </h1>
 
@@ -76,26 +77,44 @@
               de cours et d'élèves (une fois au début de chaque semestre).
             </p>
 
-            <div class="text-center">
-              <button type="button" class="btn btn-dark center-block"> Vider la base de données. </button>
-            </div>
+            <b> Attention, lors de l'importation des nouveaux fichiers,
+              l'intégralité de la base de données est supprimée, sans possibilité de retour : 
+              veillez-donc à exporter l'ensemble des résultats </b>
 
-          <h2 id="fe"> Fichier élèves </h2>
+            <p><b> Veuillez noter que la création de la base de données est très longue
+               (de l'ordre d'une dizaine de minutes) : vous ne pouvez pas accéder au site internet
+               pendant cette durée.
+            </b></p>
+
+
+            <p> Pour le moment il faut envoyer les fichiers au format .json </p>
+            <form method="post" enctype="multipart/form-data" asp-controller="UploadFiles" asp-action="Index">
+              {% csrf_token %}
+              <div class="form-group">
+                  <div class="col-md-10">
+                      <h3> Fichier élève </h3>
+                      <input type="file" name="student_file" required/>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <div class="col-md-10">
+                      <h3> Fichier cours </h3>
+                      <input type="file" name="course_file" required/>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <div class="col-md-10">
+                      <input type="submit" class="btn btn-dark center-block" value="Charger les fichiers sur le serveur" />
+                  </div>
+              </div>
+            </form>
+
+          <h2 id="fe">Format du fichier élèves </h2>
           <p>
             Le fichier d'entrée doit être au format suivant, en .csv avec « ; » comme séparateur.
             Si les libellés de module contiennent des « ; », le programme ne fonctionnera pas.<br/>
             Noter que les colonnes et les lignes sont ici inversées pour des questions de visibilité.
           </p>
-
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <button class="btn btn-outline-secondary" type="button">Charger le fichier</button>
-            </div>
-            <label class="custom-file">
-              <input type="file" id="inputGroupFile03" class="custom-file-input" required>
-              <span class="custom-file-control"></span>
-            </label>
-          </div>
 
           <table class="table">
             <thead class="thead-light">
@@ -145,7 +164,7 @@
           <table>
 
 
-          <h2 id="fc"> Fichier cours </h2>
+          <h2 id="fc"> Format du fichier cours </h2>
 
 
         </main>

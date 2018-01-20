@@ -16,6 +16,18 @@ class TypeForm(models.Model):
     def __str__(self):
         return self.name
 
+    def export_head(self):
+        """
+        Return the head
+        """
+        L = ["Cours", "Groupe", "Eleve", "Date"]
+        questions = Question.objects.filter(typeForm = self)
+        for q in questions:
+            L.extend(q.export_head())
+
+        return L
+
+
 class Question(models.Model):
     typeForm = models.ForeignKey(TypeForm, on_delete = models.CASCADE)
     position = models.IntegerField()
@@ -40,6 +52,15 @@ class Question(models.Model):
 
     def all_answers(self):
         return [a.answer for a in QuestionWithAnswer.objects.filter(question = self)]
+
+    def export_head(self):
+        """
+        Return an array containing the questions
+        """
+        if self.type_question == "select":
+            return [self.label + x for x in self.type_data.split(";")]
+        else:
+            return [self.label]
 
 class Departement(models.Model):
     name = models.CharField(max_length = 100, unique = True)
@@ -146,6 +167,19 @@ class Survey(models.Model):
         self.submissionDate = timezone.now()
         self.save()
 
+    def export(self):
+        """
+        Export every answers from self
+        """
+        L = [self.group.course.id_course, self.group.number, self.student.ldap, self.submissionDate]
+        if self.answered:
+            answers = QuestionWithAnswer.objects.filter(survey = self).order_by('question__position')
+            for a in answers:
+                L.extend(a.export_answer())
+
+            return L
+
+
 class QuestionWithAnswer(models.Model):
     question = models.ForeignKey(Question, on_delete = models.CASCADE)
     survey = models.ForeignKey(Survey, on_delete = models.CASCADE)
@@ -153,6 +187,15 @@ class QuestionWithAnswer(models.Model):
 
     def __str__(self):
         return str(self.question)
+
+    def export_answer(self):
+        """
+        Return an array containing the answer of the question =[booleans]> for 'select' and [X] for others
+        """
+        if self.question.type_question == "select":
+            return self.answer.split(';')
+        return [self.answer]
+
 
 def create_database():
     with open("media/student_file.json") as json_data_students:

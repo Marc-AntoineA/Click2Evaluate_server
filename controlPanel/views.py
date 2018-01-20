@@ -39,6 +39,18 @@ def importDb(request):
     return HttpResponse(template.render({}, request))
 
 def exportDb(request):
+
+    id_course = 740
+    tF = TypeForm.objects.get(name = "Classique")
+    surveys = Survey.objects.filter(group__course__id = 740, answered = True)
+    print(surveys)
+    L = [tF.export_head()]
+    for s in surveys:
+        L.append(s.export())
+
+    print(L)
+
+
     template = loader.get_template('controlPanel/export.html')
     return HttpResponse(template.render({}, request))
 

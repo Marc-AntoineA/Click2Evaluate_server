@@ -47,12 +47,27 @@ def exportDb(request):
     L = [tF.export_head()]
     for s in surveys:
         L.append(s.export())
-
     print(L)
 
+    # List of all available courses
+    courses = Course.objects.all()
+    item_list = [{
+        "label": c.label,
+        "commissionsDate": c.commissionsDate,
+        "id": c.id_course,
+        "rate_answer": round(c.nb_answers()/float(c.nb_students())*100, 1),
+    } for c in courses if c.nb_students() > 0]
+
+    data = {
+        "item_list": item_list,
+    }
+
+    if request.method =="GET" and 'key' in request.GET:
+        if request.GET['key'] == "data":
+            f = (lambda x: x["label"])
 
     template = loader.get_template('controlPanel/export.html')
-    return HttpResponse(template.render({}, request))
+    return HttpResponse(template.render(data, request))
 
 def typeFormView(request, id_q = None):
     typeForm_list = TypeForm.objects.all()

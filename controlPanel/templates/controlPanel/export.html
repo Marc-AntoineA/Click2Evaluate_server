@@ -67,6 +67,45 @@
              Sur cette page, vous pourrez télécharger, à tout moment, les réponses
               aux questions selon différents critères.
           </p>
+          <p>
+            Choisissez les cours que vous souhaitez exporter : un fichier par cours regroupés dans un .zip
+          </p>
+          <div id="toolbar">
+            <button id="button" class="btn btn-default" onclick="returnSelected()">Télécharger</button>
+          </div>
+          <table id="table" class="table" data-toggle="table" data-click-to-select="true" >
+            <thead class="thead-light">
+              <tr>
+                <th data-field="state" data-checkbox="true" data-events="operateEvent"></th>
+                <th scope="col" data-sortable="true" data-field="id"> Identifiant du module </th>
+                <th scope="col" data-sortable="true" data-field="label"> Non du module </th>
+                <th scope="col" data-sortable="true" data-field="date"> Date limite de réponse </th>
+                <th scope="col" data-sortable="true" data-field="rate"> Taux de réponse </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in item_list %}
+              <tr>
+                <td></td>
+                <td> {{ item.id }} </td>
+                <td> {{ item.label }} </td>
+                <td> {{ item.commissionsDate }} </td>
+                <td> {{ item.rate_answer }}% </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <script type="text/javascript">
+
+                function returnSelected(){
+                  var array_data = $('#table').bootstrapTable('getAllSelections');
+                  var array_id = [];
+                  for (i = 0; i < array_data.length; i++) {
+                      array_id.push(array_data[i].id);
+                  }
+                  console.log(array_id);
+                }
+            </script>
+
 
 
         </main>
@@ -79,5 +118,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/locale/bootstrap-table-fr-BE.js"></script>
   </body>
 </html>

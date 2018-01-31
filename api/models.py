@@ -196,6 +196,8 @@ class QuestionWithAnswer(models.Model):
             return self.answer.split(';')
         return [self.answer]
 
+def get_departement(s):
+    return s.split(" ")[0]
 
 def create_database():
     with open("media/student_file.json") as json_data_students:
@@ -215,7 +217,7 @@ def create_database():
             k = 0
             for line in d_students:
                 #Add the departement if necessary
-                dpt = line["DEPARTEMENT"]
+                dpt = get_departement(line["DEPARTEMENT"])
                 query_dpt = ""
                 try:
                     query_dpt = Departement.objects.get(name = dpt)
@@ -252,7 +254,7 @@ def create_database():
                     query_crse.save()
 
                 # Add the groups
-                delegates_tab = line['delegates'].split(';')
+                delegates_tab = line['delegates'].split(',')
                 for k in range(len(delegates_tab)):
                     try:
                         query_grp = Group.objects.get(course__id_course = id_course, number = k)

@@ -113,10 +113,11 @@
           <p>
             Le fichier d'entrée doit être au format suivant, en .csv avec « ; » comme séparateur.
             Si les libellés de module contiennent des « ; », le programme ne fonctionnera pas.<br/>
+            Ce fichier est normalement directement une extraction .csv de Gede moyennant des suppressions de certaines colonnes et le renommage de l'entête. <br/>
             Noter que les colonnes et les lignes sont ici inversées pour des questions de visibilité.
           </p>
 
-          <table class="table">
+          <table class="table" data-toggle="table">
             <thead class="thead-light">
               <tr>
                 <th scope="col"> Entête de ligne </th>
@@ -165,7 +166,48 @@
 
 
           <h2 id="fc"> Format du fichier cours </h2>
+          <p>
+            Le fichier d'entrée doit être au format suivant, en .csv avec « ; » comme séparateur. <br/>
+            Noter que les dates doivent être écrites exactement sous le format AAAA-MM-JJZHH:MM:SS qui
+            est un format standard pour stocker des dates. <br/>
+            Si les libellés de module contiennent des « ; », le programme ne fonctionnera pas.<br/>
+            Noter que les colonnes et les lignes sont ici inversées pour des questions de visibilité.
+          </p>
 
+          <table class="table" data-toggle="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col"> Entête de ligne </th>
+                <th scope="col"> Exemple de ligne </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"> id_course </th>
+                <th> TDLOG </th>
+              </tr>
+              <tr>
+                <th scope="row"> label </th>
+                <th> Techniques de développement logiciel </th>
+              </tr>
+              <tr>
+                <th scope="row"> commissionsDate </th>
+                <th> 2018−02−14T12:00:00</th>
+              </tr>
+              <tr>
+                <th scope="row"> availableDate </th>
+                <th> 2018−01−01T12:00:00</th>
+              </tr>
+              <tr>
+                <th scope="row"> typeForm </th>
+                <th> Classique </th>
+              </tr>
+              <tr>
+                <th scope="row"> delegates </th>
+                <th> herve.andres@enpc.fr </th>
+              </tr>
+            </tbody>
+          <table>
 
         </main>
       </div>

@@ -6,7 +6,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 app_name = 'controlPanel'
 urlpatterns = [
-    path('accueil/', views.home, name = "home"),
+    path('', views.home, name = "home"),
     path('vueGlobale/', views.general, name = "generalView"),
     path('vueGlobale/<str:type_request>/', views.specific, name="specificView"),
     path('vueQuestions/', views.question_home, name="questionViewHome"),
@@ -16,6 +16,7 @@ urlpatterns = [
     path('projet/', views.project, name = "project"),
     path('questionnaires/', views.typeFormView, name = "typeForm"),
     path('questionnaires/<int:id_q>/', views.typeFormView, name="typeFormSpecific"),
+    path('export_test/', views.export_csv),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

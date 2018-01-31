@@ -132,7 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIT_ROOT = '/code/static/'
+STATIC_ROOT = '/code/static/'
 
 # The URL of the LDAP server.
 LDAP_AUTH_URL = "ldap://trudaine.enpc.fr"

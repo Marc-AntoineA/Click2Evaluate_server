@@ -3,6 +3,11 @@ from django.http import HttpResponse, Http404
 from api.models import *
 from django.template import loader
 from django.core.files.storage import FileSystemStorage
+import os, tempfile, zipfile
+from wsgiref.util import FileWrapper
+from django.conf import settings
+import mimetypes
+import csv
 
 from django.contrib.auth.decorators import login_required
 
@@ -17,7 +22,7 @@ def general(request):
     template = loader.get_template('controlPanel/generalView.html')
     data = {
         "nb_students": len(Student.objects.all()),
-        "nb_courses": len(Student.objects.all()),
+        "nb_courses": len(Course.objects.all()),
         "nb_answers": len(Survey.objects.filter(answered = True)),
         "rate_answer": round(100.*len(Survey.objects.filter(answered = True))/len(Survey.objects.all()), 1),
     }
@@ -44,16 +49,36 @@ def importDb(request):
     template = loader.get_template('controlPanel/import.html')
     return HttpResponse(template.render({}, request))
 
+def export_csv(request):
+    """
+    Download csv
+    """
 
-def exportDb(request):
-    id_course = 740
+    id_course = "O2IMI"
     tF = TypeForm.objects.get(name = "Classique")
-    surveys = Survey.objects.filter(group__course__id = 740, answered = True)
-    print(surveys)
+    surveys = Survey.objects.filter(group__course__id_course = id_course, answered = True)
+
     L = [tF.export_head()]
     for s in surveys:
         L.append(s.export())
-    print(L)
+
+    with open(id_course + '.csv', 'w') as f:
+        writer = csv.writer(f)
+        writer.writerows(L)
+
+    filename = id_course + ".csv"
+    download_name = "XXX.csv"
+    wrapper      = FileWrapper(open(filename))
+    content_type = mimetypes.guess_type(filename)[0]
+    response     = HttpResponse(wrapper,content_type=content_type)
+    response['Content-Length']      = os.path.getsize(filename)
+    response['Content-Disposition'] = "attachment; filename=%s"%download_name
+    return response
+
+
+
+def exportDb(request):
+
 
     # List of all available courses
     courses = Course.objects.all()
@@ -67,10 +92,6 @@ def exportDb(request):
     data = {
         "item_list": item_list,
     }
-
-    if request.method =="GET" and 'key' in request.GET:
-        if request.GET['key'] == "data":
-            f = (lambda x: x["label"])
 
     template = loader.get_template('controlPanel/export.html')
     return HttpResponse(template.render(data, request))
@@ -132,18 +153,8 @@ def specific(request, type_request, format = None):
 
     # Useless
     f = (lambda x: x["label"])
-    #if request.method =="GET" and 'key' in request.GET:
-    #    if request.GET['key'] == "data":
-    #        f = (lambda x: x["label"])
-    #    elif request.GET['key'] == "number":
-    #        f = (lambda x: x["nb_students"])
-    #    elif request.GET['key'] == "rate":
-    #        f = (lambda x: x["rate_answer"])
 
     reverse = False
-    #if request.method =="GET" and 'order' in request.GET:
-    #    if request.GET['order'] == "inverse":
-    #        reverse = True
 
     item_list.sort(key = f, reverse = reverse)
     data = {

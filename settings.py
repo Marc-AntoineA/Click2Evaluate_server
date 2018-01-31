@@ -29,13 +29,11 @@ SECRET_KEY = 'cp$_9yy+u2(=3g^6h2jq$gz$o!yn=h)a=)c60mft5@%+7ssf6('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['149.202.63.91', '127.0.0.1']
+ALLOWED_HOSTS = ["149.202.63.91", "127.0.0.1"]
 
 
 # Application definition
-CORS_ORIGIN_WHITELIST = (
-    'localhost:8100',
-)
+CORS_ORIGIN_ALLOW_ALL = True
 
 INSTALLED_APPS = [
     'corsheaders',
@@ -48,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'mod_wsgi.server',
+    'mod_wsgi.server',
 ]
 
 MIDDLEWARE = [
@@ -93,9 +91,10 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    'django_python3_ldap.auth.LDAPBackend',
+]
 
-
-#'django_python3_ldap.auth.LDAPBackend',
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
@@ -133,6 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIT_ROOT = '/code/static/'
 
 # The URL of the LDAP server.
 LDAP_AUTH_URL = "ldap://trudaine.enpc.fr"

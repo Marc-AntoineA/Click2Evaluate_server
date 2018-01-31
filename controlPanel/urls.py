@@ -3,6 +3,7 @@ from controlPanel import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 
+
 app_name = 'controlPanel'
 urlpatterns = [
     path('accueil/', views.home, name = "home"),
@@ -14,7 +15,7 @@ urlpatterns = [
     path('export/', views.exportDb, name = "exportDb"),
     path('projet/', views.project, name = "project"),
     path('questionnaires/', views.typeFormView, name = "typeForm"),
-    path('questionnaires/<int:id_q>/', views.typeFormView, name="typeFormSpecific")
+    path('questionnaires/<int:id_q>/', views.typeFormView, name="typeFormSpecific"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

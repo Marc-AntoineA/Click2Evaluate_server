@@ -73,9 +73,7 @@
           <h2> « <i> {{ question_label }} </i> » </h2>
 
           <p>
-            <span class="number"> {{ nb_answers }} </span> personnes ont répondu à cette question, soit un taux de
-            <span class="number"> {{ rate_answer }}% </span> de réponses.
-            (Ce chiffre est faux pour les questions conditionnelles).
+            <span class="number"> {{ nb_answers }} </span> personnes ont répondu à cette question.
           </p>
 
           {% if question_type == "selectOne" or question_type == "select" %}

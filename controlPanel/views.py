@@ -4,10 +4,14 @@ from api.models import *
 from django.template import loader
 from django.core.files.storage import FileSystemStorage
 
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
+
 def home(request):
     template = loader.get_template('controlPanel/home.html')
     return HttpResponse(template.render({}, request))
+
 
 def general(request):
     template = loader.get_template('controlPanel/generalView.html')
@@ -19,9 +23,11 @@ def general(request):
     }
     return HttpResponse(template.render(data, request))
 
+
 def project(request):
     template = loader.get_template('controlPanel/project.html')
     return HttpResponse(template.render({}, request))
+
 
 def importDb(request):
     if request.method == 'POST' and request.FILES['course_file'] and request.FILES['student_file']:
@@ -38,8 +44,8 @@ def importDb(request):
     template = loader.get_template('controlPanel/import.html')
     return HttpResponse(template.render({}, request))
 
-def exportDb(request):
 
+def exportDb(request):
     id_course = 740
     tF = TypeForm.objects.get(name = "Classique")
     surveys = Survey.objects.filter(group__course__id = 740, answered = True)
@@ -68,6 +74,7 @@ def exportDb(request):
 
     template = loader.get_template('controlPanel/export.html')
     return HttpResponse(template.render(data, request))
+
 
 def typeFormView(request, id_q = None):
     typeForm_list = TypeForm.objects.all()
@@ -147,6 +154,7 @@ def specific(request, type_request, format = None):
     template = loader.get_template('controlPanel/specific.html')
     return HttpResponse(template.render(data, request))
 
+
 def question_home(request):
 
     questions = Question.objects.all()
@@ -163,30 +171,41 @@ def question_home(request):
     template = loader.get_template('controlPanel/questionsAll.html')
     return HttpResponse(template.render(data, request))
 
+
 def question(request, id_q):
     template = loader.get_template('controlPanel/question.html')
     question = Question.objects.get(id = id_q)
 
     answers = question.all_answers()
-    answers = ["Oui", "Oui", "Oui", "Non","Oui", "Peut-être"]
+    #answers = ["Oui", "Oui", "Oui", "Non","Oui", "Peut-être"]
 
     frq_answers = {}
     max_frq = 0
 
     if question.type_question == "selectOne" or question.type_question == "select":
+        list_answers = question.type_data.split(';')
+
+        for x in list_answers:
+            frq_answers[x] = 0
+
         for a in answers:
-            if a in frq_answers:
-                frq_answers[a] += 1
+            label_answer = list_answers[int(a)]
+            print(label_answer)
+            if label_answer in frq_answers:
+                frq_answers[label_answer] += 1
             else:
-                frq_answers[a] = 1
-            max_frq = max(frq_answers[a], max_frq)
+                frq_answers[label_answer] = 1
+
+            max_frq = max(frq_answers[label_answer], max_frq)
 
 
+    typeForm = question.typeForm
 
     print(frq_answers)
     rate_answer = 0
     if len(QuestionWithAnswer.objects.filter(question = question)) > 0:
-        rate_answer = round(100.*len(QuestionWithAnswer.objects.filter(question = question, survey__answered = True))/len(QuestionWithAnswer.objects.filter(question = question)), 1),
+        rate_answer = round(100.*len(QuestionWithAnswer.objects.filter(question = question, survey__answered = True))
+            /len(Survey.objects.filter(group__course__typeForm = typeForm)), 1)
 
     data = {
         "question_label": question.label,

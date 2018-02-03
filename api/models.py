@@ -3,6 +3,7 @@ from django.utils import timezone
 import datetime
 import json
 from django.core.validators import RegexValidator
+from .csvToJson import convert
 
 # A course (= id + dates + typeform + ...) is followed that many students wo follow many courses
 # An answer is made by a student for one course he follow
@@ -217,6 +218,9 @@ def get_departement(s):
     return s.split(" ")[0]
 
 def create_database():
+    convert('media/student_file')
+    convert('media/course_file')
+    
     with open("media/student_file.json") as json_data_students:
         with open("media/course_file.json") as json_data_courses:
             #% Delete files in databases

@@ -6,7 +6,6 @@ from django.core.files.storage import FileSystemStorage
 import os, tempfile, zipfile
 from wsgiref.util import FileWrapper
 from django.conf import settings
-import mimetypes
 import csv
 import io
 import tarfile
@@ -42,10 +41,10 @@ def importDb(request):
         student_file = request.FILES['student_file']
 
         fs = FileSystemStorage()
-        fs.delete("student_file.json")
-        fs.save("student_file.json", student_file)
-        fs.delete("course_file.json")
-        fs.save("course_file.json", course_file)
+        fs.delete("student_file.csv")
+        fs.save("student_file.csv", student_file)
+        fs.delete("course_file.csv")
+        fs.save("course_file.csv", course_file)
         create_database()
 
     template = loader.get_template('controlPanel/import.html')

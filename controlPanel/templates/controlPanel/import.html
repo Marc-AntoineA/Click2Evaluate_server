@@ -65,12 +65,8 @@
             <p>
               Vous pouvez charger sur le serveur la base de données permettant d'évaluer les cours.
               Ces fichiers en .csv doivent respecter rigoureusement les structures rappelées ci-dessous,
-              sans quoi la base de données pourrait être entièrement corrompue.
-            </p>
-            <p>
-              Il faut noter que la base de données mets quelques minutes à être construite,
-              du fait du nombre important de données évaluées, il faut attendre le message de confirmation
-              avant de continuer les opérations sur le site internet.
+              sans quoi la base de données pourrait être entièrement corrompue. <br/>
+              Les .csv doivent avoir pour séparateur le « <i> ; </i> ».
             </p>
             <p>
               Il est nécessaire de vider la base de données à chaque fois que vous chargez les fichiers
@@ -86,8 +82,7 @@
                pendant cette durée.
             </b></p>
 
-
-            <p> Pour le moment il faut envoyer les fichiers au format .json </p>
+            <h2> Envoi des fichiers sur le serveur </h2>
             <form method="post" enctype="multipart/form-data" asp-controller="UploadFiles" asp-action="Index">
               {% csrf_token %}
               <div class="form-group">
@@ -114,7 +109,9 @@
             Le fichier d'entrée doit être au format suivant, en .csv avec « ; » comme séparateur.
             Si les libellés de module contiennent des « ; », le programme ne fonctionnera pas.<br/>
             Ce fichier est normalement directement une extraction .csv de Gede moyennant des suppressions de certaines colonnes et le renommage de l'entête. <br/>
-            Noter que les colonnes et les lignes sont ici inversées pour des questions de visibilité.
+            Noter que les colonnes et les lignes sont ici inversées pour des questions de visibilité.<br/>
+            Si un cours ne possède aucun groupe, tous les élèves ont pour groupe le groupe <i> 0 </i>.
+            Dès qu'il y a plus de deux groupes, ils sont numérotés à partir de <i> 1 </i>.
           </p>
 
           <table class="table" data-toggle="table">
@@ -127,19 +124,19 @@
             <tbody>
               <tr>
                 <th scope="row"> NOM </th>
-                <th> DURAND </th>
+                <th> NAVIER </th>
               </tr>
               <tr>
                 <th scope="row"> PRENOM </th>
-                <th> Jean-Eudes </th>
+                <th> Henri </th>
               </tr>
               <tr>
                 <th scope="row"> LOGIN_LDAP </th>
-                <th> jean-eudes.durand@enpc.fr </th>
+                <th> henri.navier@enpc.fr </th>
               </tr>
               <tr>
                 <th scope="row"> MAIL </th>
-                <th> jean-eudes.durand@eleves.enpc.fr </th>
+                <th> henri.navier@eleves.enpc.fr </th>
               </tr>
               <tr>
                 <th scope="row"> DEPARTEMENT </th>
@@ -147,11 +144,11 @@
               </tr>
               <tr>
                 <th scope="row"> LIBELLE_MODULE </th>
-                <th> Allemand - débutant </th>
+                <th> Mécanique - débutant </th>
               </tr>
               <tr>
                 <th scope="row"> CODE_MODULE </th>
-                <th> ALL1 </th>
+                <th> MMC1 </th>
               </tr>
               <tr>
                 <th scope="row"> SC_GROUPE </th>
@@ -168,10 +165,10 @@
           <h2 id="fc"> Format du fichier cours </h2>
           <p>
             Le fichier d'entrée doit être au format suivant, en .csv avec « ; » comme séparateur. <br/>
-            Noter que les dates doivent être écrites exactement sous le format AAAA-MM-JJZHH:MM:SS qui
+            Noter que les dates doivent être écrites exactement sous le format AAAA-MM-JJTHH:MM:SSZ qui
             est un format standard pour stocker des dates. <br/>
             Si les libellés de module contiennent des « ; », le programme ne fonctionnera pas.<br/>
-            Noter que les colonnes et les lignes sont ici inversées pour des questions de visibilité.
+            Noter que les colonnes et les lignes sont ici inversées pour des questions de visibilité. <br/>
           </p>
 
           <table class="table" data-toggle="table">
@@ -192,11 +189,11 @@
               </tr>
               <tr>
                 <th scope="row"> commissionsDate </th>
-                <th> 2018−02−14T12:00:00</th>
+                <th> 2018−02−14T12:00:00Z</th>
               </tr>
               <tr>
                 <th scope="row"> availableDate </th>
-                <th> 2018−01−01T12:00:00</th>
+                <th> 2018−01−01T12:00:00Z</th>
               </tr>
               <tr>
                 <th scope="row"> typeForm </th>
@@ -204,7 +201,7 @@
               </tr>
               <tr>
                 <th scope="row"> delegates </th>
-                <th> herve.andres@enpc.fr </th>
+                <th> henri.becquerel@enpc.fr, guy.beart@enpc.fr </th>
               </tr>
             </tbody>
           <table>

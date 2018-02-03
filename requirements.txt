@@ -1,4 +1,5 @@
 Django==2.0.1
 django-rest-framework
 django-cors-headers
+pandas
 mod_wsgi

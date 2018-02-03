@@ -16,7 +16,6 @@ urlpatterns = [
     path('projet/', views.project, name = "project"),
     path('questionnaires/', views.typeFormView, name = "typeForm"),
     path('questionnaires/<int:id_q>/', views.typeFormView, name="typeFormSpecific"),
-    path('export_test/', views.export_csv),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

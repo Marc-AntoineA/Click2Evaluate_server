@@ -16,22 +16,25 @@ class TypeForm(models.Model):
     def __str__(self):
         return self.name
 
-    def export_head(self):
+    def export_head(self, anonymous = False):
         """
         Return the head
         """
         L = ["Cours", "Groupe", "Eleve", "Date"]
+        if anonymous:
+            L = ["Cours", "Groupe"]
+
         questions = Question.objects.filter(typeForm = self)
+        print(questions)
+        print(self)
         for q in questions:
             L.extend(q.export_head())
-
         return L
 
 
 class Question(models.Model):
     typeForm = models.ForeignKey(TypeForm, on_delete = models.CASCADE)
     position = models.IntegerField()
-    summary = models.CharField(max_length = 100)
     title = models.CharField(max_length = 100)
     label = models.CharField(max_length = 300)
     obligatory = models.BooleanField(default = False)
@@ -58,7 +61,7 @@ class Question(models.Model):
         Return an array containing the questions
         """
         if self.type_question == "select":
-            return [self.label + x for x in self.type_data.split(";")]
+            return [self.label + " --> " +  x for x in self.type_data.split(";")]
         else:
             return [self.label]
 
@@ -167,11 +170,16 @@ class Survey(models.Model):
         self.submissionDate = timezone.now()
         self.save()
 
-    def export(self):
+    def export(self, anonymous = False):
         """
         Export every answers from self
         """
-        L = [self.group.course.id_course, self.group.number, self.student.ldap, self.submissionDate]
+        L = []
+        if anonymous:
+            L = [self.group.course.id_course, self.group.number]
+        else:
+            L = [self.group.course.id_course, self.group.number, self.student.ldap, self.submissionDate]
+
         if self.answered:
             answers = QuestionWithAnswer.objects.filter(survey = self).order_by('question__position')
             for a in answers:
@@ -193,7 +201,16 @@ class QuestionWithAnswer(models.Model):
         Return an array containing the answer of the question =[booleans]> for 'select' and [X] for others
         """
         if self.question.type_question == "select":
-            return self.answer.split(';')
+            choices = self.answer.split(';')
+            ans = []
+            for c in choices:
+                if c == "true":
+                    ans.append("Oui")
+                else:
+                    ans.append('Non')
+            return ans
+        if self.question.type_question == "selectOne":
+            return [self.question.type_data.split(";")[int(self.answer)]]
         return [self.answer]
 
 def get_departement(s):

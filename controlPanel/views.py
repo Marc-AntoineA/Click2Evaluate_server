@@ -8,6 +8,8 @@ from wsgiref.util import FileWrapper
 from django.conf import settings
 import mimetypes
 import csv
+import io
+import tarfile
 
 from django.contrib.auth.decorators import login_required
 
@@ -49,36 +51,44 @@ def importDb(request):
     template = loader.get_template('controlPanel/import.html')
     return HttpResponse(template.render({}, request))
 
-def export_csv(request):
+def export_zip_file(List_courses, anonymous = False):
     """
-    Download csv
+    Download zip file with all courses in list_courses
+    e.g. list_courses = ['TDLOG', 'O2IMI']
     """
+    prefix = "media/"
+    suffix = ".csv"
+    if anonymous:
+        suffix = "_anonyme.csv"
 
-    id_course = "O2IMI"
-    tF = TypeForm.objects.get(name = "Classique")
-    surveys = Survey.objects.filter(group__course__id_course = id_course, answered = True)
+    for id_course in List_courses:
+        id_course.strip()
+        print(id_course)
+        course = Course.objects.get(id_course = id_course)
+        tF = course.typeForm
+        surveys = Survey.objects.filter(group__course__id_course = id_course, answered = True).order_by("submissionDate")
 
-    L = [tF.export_head()]
-    for s in surveys:
-        L.append(s.export())
+        answers_data = [tF.export_head(anonymous)]
+        for s in surveys:
+            answers_data.append(s.export(anonymous))
 
-    with open(id_course + '.csv', 'w') as f:
-        writer = csv.writer(f)
-        writer.writerows(L)
+        with open(prefix + id_course + suffix, 'w') as answers_file:
+            writer = csv.writer(answers_file)
+            writer.writerows(answers_data)
 
-    filename = id_course + ".csv"
-    download_name = "XXX.csv"
-    wrapper      = FileWrapper(open(filename))
-    content_type = mimetypes.guess_type(filename)[0]
-    response     = HttpResponse(wrapper,content_type=content_type)
-    response['Content-Length']      = os.path.getsize(filename)
-    response['Content-Disposition'] = "attachment; filename=%s"%download_name
+    # Create the response and the tar file
+    response = HttpResponse(content_type='application/x-gzip')
+    name_tar = "export_reponses"
+    response['Content-Disposition'] = 'attachment; filename= Export_reponses'  + suffix + '.tar.gz'
+    tarred = tarfile.open(fileobj=response, mode='w:gz')
+
+    for id_course in List_courses:
+        tarred.add(prefix + id_course + suffix)
+    tarred.close()
+
     return response
 
-
-
 def exportDb(request):
-
 
     # List of all available courses
     courses = Course.objects.all()
@@ -92,10 +102,18 @@ def exportDb(request):
     data = {
         "item_list": item_list,
     }
-
     template = loader.get_template('controlPanel/export.html')
-    return HttpResponse(template.render(data, request))
 
+    if "courses" in request.GET:
+        data_requested = request.GET['courses']
+        print(data_requested)
+        list_courses = data_requested.split(",")
+        print(list_courses)
+        anonymous = "anonymous" in request.GET
+
+        return export_zip_file(list_courses, anonymous)
+    else:
+        return HttpResponse(template.render(data, request))
 
 def typeFormView(request, id_q = None):
     typeForm_list = TypeForm.objects.all()

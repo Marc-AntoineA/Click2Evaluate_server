@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     #'mod_wsgi.server',
 ]
 
@@ -95,7 +96,6 @@ DATABASES = {
 
 
 
-#'django_python3_ldap.auth.LDAPBackend',
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
@@ -133,6 +133,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
+AUTHENTICATION_BACKENDS = ['api.authenticationBackend.Backend']   
 
 # The URL of the LDAP server.
 LDAP_AUTH_URL = "ldap://trudaine.enpc.fr"

@@ -2,10 +2,12 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from .models import Student, Course, Group, TypeForm, Survey, Question, QuestionWithAnswer
 
+
 class QuestionSerializer(serializers.ModelSerializer):
     """
     Serializer for model Question
     """
+    
     class Meta:
         model = Question
         fields = ('id','position', 'label', 'obligatory', 'title', 'type_question',
@@ -15,6 +17,7 @@ class StudentSerializer(serializers.ModelSerializer):
     """
     Serializer for model Student
     """
+
     departement = serializers.CharField(source = 'departement.name')
     class Meta:
         model = Student
@@ -24,6 +27,7 @@ class CourseSerializer(serializers.ModelSerializer):
     """
     Serializer for model Course
     """
+
     typeForm_name = serializers.CharField(source='typeForm.name')
     class Meta:
         model = Course
@@ -33,6 +37,7 @@ class GroupSerializer(serializers.ModelSerializer):
     """
     Serializer for model Group
     """
+
     course_id = serializers.CharField(source = 'course.id_course')
     class Meta:
         model = Group
@@ -42,6 +47,7 @@ class SurveySerializer(serializers.ModelSerializer):
     """
     Serializer for model Survey with ForeignKeys
     """
+
     id_course = serializers.CharField(source = 'group.course.id_course')
     label = serializers.CharField(source = 'group.course.label')
     delegate = serializers.CharField(source = 'group.delegate')

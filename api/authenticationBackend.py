@@ -4,10 +4,14 @@ class Backend:
     def authenticate(self, request, username=None, password=None):
         # Check the username/password and return a user.
         try:
+            print("hello {}".format(username))
             user = User.objects.get(username = username)
-
+            return user
         except User.DoesNotExist:
             return None
 
-    def get_user(ldap):
-        return User.get(username = ldp)
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(id = user_id)
+        except User.DoesNotExist:
+            return None

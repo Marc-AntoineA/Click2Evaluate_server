@@ -8,14 +8,14 @@ from .models import Student, Course, Survey, TypeForm, Group, Question, Question
 from .serializers import StudentSerializer, CourseSerializer, SurveySerializer, GroupSerializer, QuestionSerializer, QuestionWithAnswerSerializer
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework import permissions
+from .permissions import IsAnswerFromStudent, IsCourseFromStudent
 
 # ListAPIView provides a generic view for read-only
 # represent a collection of model instances
 class StudentsList(ListAPIView):
     """
-    List all students
+    List all students USELESS
     """
-    #permission_classes = (permissions.IsAuthenticated,)
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
@@ -23,7 +23,7 @@ class SurveyStudentList(APIView):
     """
     List all 'courses' followed by a specific student
     """
-    #permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated, IsCourseFromStudent,)
     def get(self, request, pk, format = None):
         surveys = Survey.objects.filter(student__ldap = pk)
         serializer = SurveySerializer(surveys, many = True)
@@ -33,7 +33,7 @@ class TypeForm_questions(APIView):
     """
     Return all questions from a typeform corresponding to a name
     """
-    #permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, name, format = None):
         typeForm = Question.objects.filter(typeForm__name = name).order_by('position');
         serializer = QuestionSerializer(typeForm, many = True)
@@ -42,8 +42,9 @@ class TypeForm_questions(APIView):
 class ExistsStudent(APIView):
     """
     Return the student if possible
+    USELESS
     """
-    #permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, name, format = None):
         try:
             student = Student.objects.get(ldap = name)
@@ -56,8 +57,7 @@ class Answers(APIView):
     """
     Retrieve or update an answer instance.
     """
-    #permission_classes = (permissions.IsAuthenticated,)
-
+    permission_classes = (permissions.IsAuthenticated, IsAnswerFromStudent,)
     def get_object(self, surveyId, questionId):
         print(surveyId, questionId)
         try:

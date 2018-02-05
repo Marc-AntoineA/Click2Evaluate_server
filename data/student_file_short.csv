@@ -1,0 +1,106 @@
+NOM;PRENOM;LOGIN_LDAP;MAIL;DEPARTEMENT;LIBELLE_MODULE;CODE_MODULE;SC_GROUPE;PERIODE
+ELFASSIHI;Amal;amal.elfassihi@enpc.fr;amal.elfassihi@eleves.enpc.fr;IMI Fin Quantit;Master Recherche;3AMRH;0;Automne
+MORLAAS;Eloi;eloi.morlaas@enpc.fr;eloi.morlaas@eleves.enpc.fr;GI;Prolongation de scolarité;PROSC;0;Automne
+NATTA;Clément;clement.natta@enpc.fr;clement.natta@eleves.enpc.fr;SEGF Finance;Prolongation de scolarité;PROSC;0;Automne
+ARTIGUE;Vincent;vincent.artigue@enpc.fr;vincent.artigue@eleves.enpc.fr;SEGF Finance;Prolongation de scolarité;PROSC;0;Automne
+GARCIA;Antoine;antoine.garcia@enpc.fr;antoine.garcia@eleves.enpc.fr;IMI Fin Quantit;Prolongation de scolarité;PROSC;0;Automne
+JEGARD;Martin;martin.jegard@enpc.fr;martin.jegard@eleves.enpc.fr;SEGF Finance;Prolongation de scolarité;PROSC;0;Automne
+LHERMITTE;Louis;louis.lhermitte@enpc.fr;louis.lhermitte@eleves.enpc.fr;SEGF Finance;Prolongation de scolarité;PROSC;0;Automne
+MUZARD;Théo;theo.muzard@enpc.fr;theo.muzard@eleves.enpc.fr;VET Transport;Projet de fin d'etudes;PFEVA;0;Automne
+PERRIN-DELORT;Alexandre;alexandre.perrin-delort@enpc.fr;alexandre.perrin-delort@eleves.enpc.fr;SEGF Finance;Prolongation de scolarité;PROSC;0;Automne
+PERSOZ;Bérénice;berenice.persoz@enpc.fr;berenice.persoz@eleves.enpc.fr;GCC;Restauration et réhabilit. des bétiments anciens;O3BAT;0;Automne
+PERSOZ;Bérénice;berenice.persoz@enpc.fr;berenice.persoz@eleves.enpc.fr;GCC;Industrie du futur;INDFU;0;Automne
+PERSOZ;Bérénice;berenice.persoz@enpc.fr;berenice.persoz@eleves.enpc.fr;GCC;Conception d'une arche;O3ATT;0;Automne
+PERSOZ;Bérénice;berenice.persoz@enpc.fr;berenice.persoz@eleves.enpc.fr;GCC;Retour d'expérience du stage ingénieur;O3STA;8;Automne
+MARFOUQ;Mohamed Amine;mohamed-amine.marfouq@enpc.fr;mohamed-amine.marfouq@eleves.enpc.fr;GCC;Projet de fin d'etudes;PFE;0;Automne
+BELLANCOURT;Quentin;quentin.bellancourt@enpc.fr;quentin.bellancourt@eleves.enpc.fr;GCC;Pratique des notions fond. de géologie de l'ingé;O2GEO;0;Automne
+BELLANCOURT;Quentin;quentin.bellancourt@enpc.fr;quentin.bellancourt@eleves.enpc.fr;GCC;Logistique territoriale;O3LOT;0;Automne
+BELLANCOURT;Quentin;quentin.bellancourt@enpc.fr;quentin.bellancourt@eleves.enpc.fr;GCC;Industrie du futur;INDFU;0;Automne
+CALDAS STEINSTRAESSER;Joao Guilherme;joao-guilherme.caldas-steinstraesser@enpc.fr;joao-guilherme.caldas-steinstraesser@eleves.enpc.fr;IMI Analyse num.;Projet de fin d'etudes;PFE;0;Automne
+LOPEZ HIGUERAS;Adriana;adriana.lopez-higueras@enpc.fr;adriana.lopez-higueras@eleves.enpc.fr;GCC;Prolongation de scolarité;PROSC;0;Automne
+PELLETIER;Jérémie;jeremie.pelletier@enpc.fr;jeremie.pelletier@eleves.enpc.fr;GCC;Pratique des notions fond. de géologie de l'ingé;O2GEO;0;Automne
+PELLETIER;Jérémie;jeremie.pelletier@enpc.fr;jeremie.pelletier@eleves.enpc.fr;GCC;Logistique territoriale;O3LOT;0;Automne
+PELLETIER;Jérémie;jeremie.pelletier@enpc.fr;jeremie.pelletier@eleves.enpc.fr;GCC;Analyse de cycle de vie : introduction;O3ACV;0;Automne
+VIENNEY;Aurianne;aurianne.vienney@enpc.fr;aurianne.vienney@eleves.enpc.fr;SEGF Finance;Echange non diplémant é l'étranger (1 semestre);3AND1;0;Automne
+TROUSSARD;Martin;martin.troussard@enpc.fr;martin.troussard@eleves.enpc.fr;IMI Fin Quantit;Master Recherche;3AMRH;0;Automne
+TROUSSARD;Martin;martin.troussard@enpc.fr;martin.troussard@eleves.enpc.fr;IMI Fin Quantit;Retour d'expérience du stage ingénieur;O3STA;2;Automne
+TORDO;William;william.tordo@enpc.fr;william.tordo@eleves.enpc.fr;SEGF Finance;Industrie du futur;INDFU;0;Automne
+TORDO;William;william.tordo@enpc.fr;william.tordo@eleves.enpc.fr;SEGF Finance;Retour d'expérience du stage ingénieur;O3STA;5;Automne
+SOULIER;Eloése;eloise.soulier@enpc.fr;eloise.soulier@eleves.enpc.fr;IMI - Vision;Master Recherche;3AMRH;0;Automne
+SOULIER;Eloése;eloise.soulier@enpc.fr;eloise.soulier@eleves.enpc.fr;IMI - Vision;Retour d'expérience du stage ingénieur;O3STA;6;Automne
+SIMON;Titouan;titouan.simon@enpc.fr;titouan.simon@eleves.enpc.fr;SEGF Finance;Formation agréée diplémante é l'étranger;3AFDE;0;Automne
+SALOMON;Nicolas;nicolas.salomon@enpc.fr;nicolas.salomon@eleves.enpc.fr;SEGF Finance;Double-dipléme é l'étranger;3ADDE;0;Automne
+PRUVOST;Thomas;thomas.pruvost@enpc.fr;thomas.pruvost@eleves.enpc.fr;SEGF Finance;Formation agréée diplémante é l'étranger;3AFDE;0;Automne
+MOUSSEY;Charlie;charlie.moussey@enpc.fr;charlie.moussey@eleves.enpc.fr;SEGF Finance;Industrie du futur;INDFU;0;Automne
+MOUSSEY;Charlie;charlie.moussey@enpc.fr;charlie.moussey@eleves.enpc.fr;SEGF Finance;Retour d'expérience du stage ingénieur;O3STA;7;Automne
+BOUDOU;Justine;justine.boudou@enpc.fr;justine.boudou@eleves.enpc.fr;SEGF Finance;Echange non diplémant é l'étranger (1 semestre);3AND1;0;Automne
+CHAILLARD;Fabien;fabien.chaillard@enpc.fr;fabien.chaillard@eleves.enpc.fr;GCC;Restauration et réhabilit. des bétiments anciens;O3BAT;0;Automne
+CHAILLARD;Fabien;fabien.chaillard@enpc.fr;fabien.chaillard@eleves.enpc.fr;GCC;Conception d'une arche;O3ATT;0;Automne
+CHAILLARD;Fabien;fabien.chaillard@enpc.fr;fabien.chaillard@eleves.enpc.fr;GCC;Retour d'expérience du stage ingénieur;O3STA;7;Automne
+CONSTANTINI;Dan;dan.constantini@enpc.fr;dan.constantini@eleves.enpc.fr;IMI Fin Quantit;Master Recherche;3AMRH;0;Automne
+DAVOINE;Theo;theo.davoine@enpc.fr;theo.davoine@eleves.enpc.fr;SEGF Finance;Formation agréée diplémante é l'étranger;3AFDE;0;Automne
+DELLENBACH;Hannah;hannah.dellenbach@enpc.fr;hannah.dellenbach@eleves.enpc.fr;SEGF Finance;Formation agréée diplémante é l'étranger;3AFDE;0;Automne
+EDDAMANI;Soufiane;soufiane.eddamani@enpc.fr;soufiane.eddamani@eleves.enpc.fr;SEGF Finance;Double-dipléme é l'étranger;3ADDE;0;Automne
+ELIES;Soléne;solene.elies@enpc.fr;solene.elies@eleves.enpc.fr;SEGF Finance;Echange non diplémant é l'étranger (2 semestres);3AND2;0;Automne
+FENG;Leman;leman.feng@enpc.fr;leman.feng@eleves.enpc.fr;IMI - Vision;Master Recherche;3AMRH;0;Automne
+JIANG;Tong;tong.jiang@enpc.fr;tong.jiang@eleves.enpc.fr;(null);Thése professionnelle;THPRO;0;Automne
+DEMERENS;Maxime;maxime.demerens@enpc.fr;maxime.demerens@eleves.enpc.fr;VET Eau environn;Logistique territoriale;O3LOT;0;Automne
+DEMERENS;Maxime;maxime.demerens@enpc.fr;maxime.demerens@eleves.enpc.fr;VET Eau environn;Analyse de cycle de vie : introduction;O3ACV;0;Automne
+DEMERENS;Maxime;maxime.demerens@enpc.fr;maxime.demerens@eleves.enpc.fr;VET Eau environn;Retour d'expérience du stage ingénieur;O3STA;7;Automne
+ZINI;Victor;victor.zini@enpc.fr;victor.zini@eleves.enpc.fr;GI - Innovation;Prolongation de scolarité;PROSC;0;Automne
+BéCHET;Corentin;corentin.bechet@enpc.fr;corentin.bechet@eleves.enpc.fr;GMM;Prolongation de scolarité;PROSC;0;Automne
+BOUCHARDY;Antoine;antoine.bouchardy@enpc.fr;antoine.bouchardy@eleves.enpc.fr;GMM;Prolongation de scolarité;PROSC;0;Automne
+DENAIS;Martin;martin.denais@enpc.fr;martin.denais@eleves.enpc.fr;GI - Opti. SC;Prolongation de scolarité;PROSC;0;Automne
+DESSALLES;David;david.dessalles@enpc.fr;david.dessalles@eleves.enpc.fr;GMM;Prolongation de scolarité;PROSC;0;Automne
+EL BAHRI;Safouan;safouan.el-bahri@enpc.fr;safouan.el-bahri@eleves.enpc.fr;GMM;Prolongation de scolarité;PROSC;0;Automne
+LOSZKA;Mickaél;mickael.loszka@enpc.fr;mickael.loszka@eleves.enpc.fr;GMM;Prolongation de scolarité;PROSC;0;Automne
+NOYER;Cécile;cecile.noyer@enpc.fr;cecile.noyer@eleves.enpc.fr;GMM;Prolongation de scolarité;PROSC;0;Automne
+ROTURIER;Orian;orian.roturier@enpc.fr;orian.roturier@eleves.enpc.fr;GI - Opti. SC;Prolongation de scolarité;PROSC;0;Automne
+SAULT;Adrien;adrien.sault@enpc.fr;adrien.sault@eleves.enpc.fr;GMM;Prolongation de scolarité;PROSC;0;Automne
+SBAI;Othman;othman.sbai@enpc.fr;othman.sbai@eleves.enpc.fr;GMM;Prolongation de scolarité;PROSC;0;Automne
+SANTINI;Pierre;pierre.santini@enpc.fr;pierre.santini@eleves.enpc.fr;(null);Projet de fin d'etudes;PFEM;0;Automne
+NI;Vincent;vincent.ni@enpc.fr;vincent.ni@eleves.enpc.fr;GI - Opti. SC;Prolongation de scolarité;PROSC;0;Automne
+PREVERAUD de VAUMAS;Etienne;etienne.preveraud-de-vaumas@enpc.fr;etienne.preveraud-de-vaumas@eleves.enpc.fr;GMM;Prolongation de scolarité;PROSC;0;Automne
+PAYRARD;Diane;diane.payrard@enpc.fr;diane.payrard@eleves.enpc.fr;VET Aménagement;Projet de fin d'etudes;PFE;0;Automne
+HUANG;Valentin;valentin.huang@enpc.fr;valentin.huang@eleves.enpc.fr;GI - Innovation;Industrie du futur;INDFU;0;Automne
+HUANG;Valentin;valentin.huang@enpc.fr;valentin.huang@eleves.enpc.fr;GI - Innovation;Retour d'expérience du stage ingénieur;O3STA;6;Automne
+SABRAN;Maxime;maxime.sabran@enpc.fr;maxime.sabran@eleves.enpc.fr;GI - Innovation;Double-dipléme é l'étranger;3ADDE;0;Automne
+ATTIA;Alexandre;alexandre.attia@enpc.fr;alexandre.attia@eleves.enpc.fr;GI - Innovation;Master Recherche;3AMRH;0;Automne
+ATTIA;Alexandre;alexandre.attia@enpc.fr;alexandre.attia@eleves.enpc.fr;GI - Innovation;Retour d'expérience du stage ingénieur;O3STA;2;Automne
+TEYTU;Jéréme;jerome.teytu@enpc.fr;jerome.teytu@eleves.enpc.fr;GMM;Industrie du futur;INDFU;0;Automne
+TEYTU;Jéréme;jerome.teytu@enpc.fr;jerome.teytu@eleves.enpc.fr;GMM;Séminaire métiers;O3GMM;0;Automne
+TEYTU;Jéréme;jerome.teytu@enpc.fr;jerome.teytu@eleves.enpc.fr;GMM;Retour d'expérience du stage ingénieur;O3STA;2;Automne
+SUSSET;Marianne;marianne.susset@enpc.fr;marianne.susset@eleves.enpc.fr;GI - Opti. SC;Echange non diplémant é l'étranger (1 semestre);3AND1;0;Automne
+RADULESCO;Romain;romain.radulesco@enpc.fr;romain.radulesco@eleves.enpc.fr;GMM;Double-dipléme é l'étranger;3ADDE;0;Automne
+BASTIDE;Rémy;remy.bastide@enpc.fr;remy.bastide@eleves.enpc.fr;GMM;Double-dipléme é l'étranger;3ADDE;0;Automne
+BENBELKACEM;Samy;samy.benbelkacem@enpc.fr;samy.benbelkacem@eleves.enpc.fr;GMM;College des ingenieurs;COLIN;0;Automne
+BENOIT DE COIGNAC;Marie;marie.benoit-de-coignac@enpc.fr;marie.benoit-de-coignac@eleves.enpc.fr;GI - Opti. SC;Formation agréée diplémante é l'étranger;3AFDE;0;Automne
+BERTRAND;Thomas;thomas.bertrand@enpc.fr;thomas.bertrand@eleves.enpc.fr;GI - Opti. SC;Industrie du futur;INDFU;0;Automne
+BERTRAND;Thomas;thomas.bertrand@enpc.fr;thomas.bertrand@eleves.enpc.fr;GI - Opti. SC;Retour d'expérience du stage ingénieur;O3STA;3;Automne
+BLARRE;Auriane;auriane.blarre@enpc.fr;auriane.blarre@eleves.enpc.fr;IMI - Optimis;Formation agréée diplémante é l'étranger;3AFDE;0;Automne
+CHAN HON TONG;Damien;damien.chan-hon-tong@enpc.fr;damien.chan-hon-tong@eleves.enpc.fr;VET Aménagement;Echange non diplémant é l'étranger (2 semestres);3AND2;0;Automne
+CHAN HON TONG;Damien;damien.chan-hon-tong@enpc.fr;damien.chan-hon-tong@eleves.enpc.fr;VET Aménagement;Projet de fin d'etudes;PFE;0;Automne
+CHASSIN;Lucien;lucien.chassin@enpc.fr;lucien.chassin@eleves.enpc.fr;GMM;Industrie du futur;INDFU;0;Automne
+CHASSIN;Lucien;lucien.chassin@enpc.fr;lucien.chassin@eleves.enpc.fr;GMM;Séminaire métiers;O3GMM;0;Automne
+DELMARRE;Anne;anne.delmarre@enpc.fr;anne.delmarre@eleves.enpc.fr;VET Eau environn;Echange non diplémant é l'étranger (2 semestres);3AND2;0;Automne
+DELMARRE;Anne;anne.delmarre@enpc.fr;anne.delmarre@eleves.enpc.fr;VET Eau environn;Projet de fin d'etudes;PFE;0;Automne
+DESCHAMPS;Sébastien;sebastien.deschamps@enpc.fr;sebastien.deschamps@eleves.enpc.fr;IMI - Optimis;Master Recherche;3AMRH;0;Automne
+DESCHAMPS;Sébastien;sebastien.deschamps@enpc.fr;sebastien.deschamps@eleves.enpc.fr;IMI - Optimis;Retour d'expérience du stage ingénieur;O3STA;3;Automne
+DESJOBERT;Alexandre;alexandre.desjobert@enpc.fr;alexandre.desjobert@eleves.enpc.fr;GI - Innovation;Double-dipléme é l'étranger;3ADDE;0;Automne
+BISMUTH;Jessica;jessica.bismuth@enpc.fr;jessica.bismuth@eleves.enpc.fr;GI - Opti. SC;Echange non diplémant é l'étranger (1 semestre);3AND1;0;Automne
+BLONDEAU;Andréas;andreas.blondeau@enpc.fr;andreas.blondeau@eleves.enpc.fr;GI - Innovation;Echange non diplémant é l'étranger (1 semestre);3AND1;0;Automne
+DURAND;Baptiste;baptiste.durand@enpc.fr;baptiste.durand@eleves.enpc.fr;GMM;Master Recherche;3AMRH;0;Automne
+FENG;Leman;leman.feng@enpc.fr;leman.feng@eleves.enpc.fr;IMI - Vision;Retour d'expérience du stage ingénieur;O3STA;7;Automne
+HAVY;Luc;luc.havy@enpc.fr;luc.havy@eleves.enpc.fr;GCC;Echange non diplémant é l'étranger (2 semestres);3AND2;0;Automne
+FRANCHI;Laetitia;laetitia.franchi@enpc.fr;laetitia.franchi@eleves.enpc.fr;GCC;Prolongation de scolarité (2);PROS1;0;Automne
+VINOT;Noé;noe.vinot@enpc.fr;noe.vinot@eleves.enpc.fr;GI;Industrie du futur;INDFU;0;Automne
+VINOT;Noé;noe.vinot@enpc.fr;noe.vinot@eleves.enpc.fr;GI;Retour d'expérience du stage ingénieur;O3STA;4;Automne
+ROLLAND;Thibault;thibault.rolland@enpc.fr;thibault.rolland@eleves.enpc.fr;GI;Prolongation de scolarité;PROSC;0;Automne
+MARTIN;Antoine;antoine.martin@enpc.fr;antoine.martin@eleves.enpc.fr;GCC;Prolongation de scolarité;PROSC;0;Automne
+VIROLLEAU;Antoine;antoine.virolleau@enpc.fr;antoine.virolleau@eleves.enpc.fr;GCC;Restauration et réhabilit. des bétiments anciens;O3BAT;0;Automne
+VIROLLEAU;Antoine;antoine.virolleau@enpc.fr;antoine.virolleau@eleves.enpc.fr;GCC;Retour d'expérience du stage ingénieur;O3STA;5;Automne
+BA;Mouhamadou;mouhamadou.ba@enpc.fr;mouhamadou.ba@eleves.enpc.fr;SEGF Finance;Prolongation de scolarité;PROSC;0;Automne
+BABOZ;Elise;elise.baboz@enpc.fr;elise.baboz@eleves.enpc.fr;GCC;Prolongation de scolarité;PROSC;0;Automne
+CARANTINO;Vassily;vassily.carantino@enpc.fr;vassily.carantino@eleves.enpc.fr;SEGF Finance;Prolongation de scolarité;PROSC;0;Automne
+HENRY;Nicolas;nicolas.henry@enpc.fr;nicolas.henry@eleves.enpc.fr;SEGF Finance;Prolongation de scolarité;PROSC;0;Automne
+LECOURT;Franéois;francois.lecourt@enpc.fr;francois.lecourt@eleves.enpc.fr;SEGF Finance;Prolongation de scolarité;PROSC;0;Automne

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User # For authentication
 from django.utils import timezone
 import datetime
 import json
@@ -7,8 +8,6 @@ from .csvToJson import convert
 
 # A course (= id + dates + typeform + ...) is followed that many students wo follow many courses
 # An answer is made by a student for one course he follow
-
-
 
 class TypeForm(models.Model):
     name = models.CharField(max_length = 100, unique = True) # e.g. "Classique"
@@ -55,11 +54,14 @@ class Question(models.Model):
         return self.label
 
     def all_answers(self):
+        """
+        Return a list containing all answers for one question (for every Course)
+        """
         return [a.answer for a in QuestionWithAnswer.objects.filter(question = self)]
 
     def export_head(self):
         """
-        Return an array containing the questions
+        Return an array containing the questions (not the answers)
         """
         if self.type_question == "select":
             return [self.label + " --> " +  x for x in self.type_data.split(";")]
@@ -91,7 +93,12 @@ class Departement(models.Model):
         return len(Survey.objects.filter(student__departement = self, answered = True))
 
 class Student(models.Model):
+
+    # 'user' used for authentification
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     ldap = models.CharField(max_length = 100, unique = True) # e.g. "andre.dupont@enpc.fr"
+    first_name = models.CharField(max_length = 20)
+    last_name = models.CharField(max_length = 20)
     mail = models.CharField(max_length = 100, unique = True)
     departement = models.ForeignKey(Departement, on_delete = models.CASCADE)
     def __str__(self):
@@ -166,7 +173,9 @@ class Survey(models.Model):
         return str(self.student) + " / " + str(self.group)
 
     def just_answered(self):
-        print(self)
+        """
+        Change the submissionDate and self.answered to True
+        """
         self.answered = True
         self.submissionDate = timezone.now()
         self.save()
@@ -215,18 +224,27 @@ class QuestionWithAnswer(models.Model):
         return [self.answer]
 
 def get_departement(s):
-    return s.split(" ")[0]
+    """
+    Return the firt word of s. E.g. "IMI - Finance" become "IMI" and "IMI-Finance" stay "IMI-Finance" (no space).
+    If s is "" or only wone word --> return ""
+    """
+    try:
+        return s.split(" ")[0]
+    except:
+        return ""
 
 def create_database():
     convert('media/student_file')
     convert('media/course_file')
-    
+
     with open("media/student_file.json") as json_data_students:
         with open("media/course_file.json") as json_data_courses:
             #% Delete files in databases
             Student.objects.all().delete()
+            User.objects.exclude(username = "s2ip").delete()
             Course.objects.all().delete()
             Survey.objects.all().delete()
+            Departement.objects.all().delete()
             QuestionWithAnswer.objects.all().delete()
             Group.objects.all().delete()
             Survey.objects.all().delete()
@@ -238,23 +256,35 @@ def create_database():
             k = 0
             for line in d_students:
                 #Add the departement if necessary
-                dpt = get_departement(line["DEPARTEMENT"])
+
                 query_dpt = ""
                 try:
+                    dpt = get_departement(line["DEPARTEMENT"])
                     query_dpt = Departement.objects.get(name = dpt)
 
                 except Departement.DoesNotExist:
                     query_dpt = Departement(name = dpt)
                     query_dpt.save()
-
+                except:
+                    pass
                 #Add the student if necessary (with mail, ldap and departement)
+
                 ldap = line["LOGIN_LDAP"]
-                if type(ldap) == type(" "):
+                first_name = line["PRENOM"]
+                last_name = line["NOM"]
+                email = line["MAIL"]
+                if type(ldap) == type(" ") and type(first_name) == type(" ") \
+                    and type(last_name) == type(" ") and type(email) == type(" "):
                     query_stdt = ""
                     try:
                         query_stdt = Student.objects.get(ldap = ldap)
                     except Student.DoesNotExist:
-                        query_stdt = Student(ldap = ldap, mail = line["MAIL"], departement = query_dpt)
+                        # password (here the last ldap) is not used in reality: it's useless.
+                        user = User(username = ldap, email = email, password = "my password")
+                        user.save()
+                        query_stdt = Student(ldap = ldap, mail = email,
+                            departement = query_dpt, user = user,
+                            first_name = first_name, last_name = last_name)
                         query_stdt.save()
 
             #Add courses and groups from d_courses

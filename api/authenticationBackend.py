@@ -6,6 +6,7 @@ class Backend:
         try:
             print("hello {}".format(username))
             user = User.objects.get(username = username)
+            print("Connected")
             return user
         except User.DoesNotExist:
             return None

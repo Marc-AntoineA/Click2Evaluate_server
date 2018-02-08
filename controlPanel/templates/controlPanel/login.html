@@ -22,7 +22,7 @@
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'controlPanel:generalView' %}"> Vue d'ensemble </a>
+              <a class="nav-link" href="{% url 'controlPanel:generalView' %}"> Vue d'ensemble</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'controlPanel:exportDb' %}"> Exporter les réponses </a>
@@ -34,8 +34,8 @@
               <a class="nav-link" href="{% url 'controlPanel:typeForm' %}"> Gestion des questionnaires </a>
             </li>
 
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'controlPanel:project' %}"> Le projet <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'controlPanel:project' %}"> Le projet </a>
             </li>
           </ul>
           <ul class="navbar-nav">
@@ -47,45 +47,39 @@
       </nav>
     </header>
 
-    <!-- <div class="container-fluid">
-      <div class="row">
-        <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
-          <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link active" href="#"> Accueil <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"> Le projet </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Export</a>
-            </li>
-          </ul>
-        </nav>-->
+
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-          <h1> Le projet  </h1>
-
-          <p>
-             Ce projet (site et application) a été réalisé au cours de l'année 2017-2018 par
-             Hervé Andrès, Marc-Antoine Augé, Bastien Dechamps et Michaël Karpe dans le cadre du cours de Technique de Développement
-             Logiciel de deuxième année de l'École des Ponts. <br/>
-             Il a été réalisé en collaboration avec Barbara Gérard, assistante au S2iP et
-             encadré par Xavier Clerc, professeur du cours de TDLOG. <br/>
-
-             Des informations complémentaires sur le déroulé du projet sont disponibles aux liens suivants :
-             <ul>
-               <li> <a href="{% static 'controlPanel/poster.pdf '%}"> Poster présenté </a> </li>
-               <li> <a href="{% static 'controlPanel/documentation.pdf' %}"> Documentation </a> </li>
-               <li> <a href="{% static 'controlPanel/journalBord.pdf '%}"> Compte-rendus des réunions </a></li>
-               <li> <a href="#"> Repo Github de l'application </a></li>
-               <li> <a href="#"> Repo Github du serveur </a></li>
-            </ul>
-          </p>
+          <h1> Panneau d'administration de l'évaluation des cours </h1>
 
 
+          <h2> Se connecter  </h2>
+          <p> <b> {{ message }} </b> </p>
+          
+          <div id="login">
+            <form class="form-horizontal" name="LoginForm" action="{% url 'controlPanel:connect' %}" method="post">
+            {% csrf_token %}
+            {% if next %}
+               <input type="hidden" name="next" value="{{ next }}" />
+            {% endif %}
+            <div class="control-group">
+                <label class="control-label" for="username"> Identifiant </label>
+                <div class="controls">
+                    <input type="text" id="username" name="username"  placeholder="prenom.nom@enpc.fr">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="password">Mot de passe</label>
+                <div class="controls">
+                    <input type="password" name="password" id="password" placeholder="XXX">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn"> Se connecter </button>
+                </div>
+            </div>
+            </form>
+        </div>
         </main>
       </div>
     </div>

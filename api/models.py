@@ -241,7 +241,7 @@ def create_database():
         with open("media/course_file.json") as json_data_courses:
             #% Delete files in databases
             Student.objects.all().delete()
-            User.objects.exclude(username = "s2ip").delete()
+            User.objects.filter(is_staff = False).delete()
             Course.objects.all().delete()
             Survey.objects.all().delete()
             Departement.objects.all().delete()

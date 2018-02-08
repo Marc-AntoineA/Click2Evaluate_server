@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from api.models import *
 from django.template import loader
 from django.core.files.storage import FileSystemStorage
@@ -9,16 +9,19 @@ from django.conf import settings
 import csv
 import io
 import tarfile
+import controlPanel.models
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 
+@login_required(login_url='/s2ip/connecter')
 def home(request):
     template = loader.get_template('controlPanel/home.html')
     return HttpResponse(template.render({}, request))
 
-
+@login_required(login_url='/s2ip/connecter')
 def general(request):
     template = loader.get_template('controlPanel/generalView.html')
     data = {
@@ -29,12 +32,12 @@ def general(request):
     }
     return HttpResponse(template.render(data, request))
 
-
+@login_required(login_url='/s2ip/connecter')
 def project(request):
     template = loader.get_template('controlPanel/project.html')
     return HttpResponse(template.render({}, request))
 
-
+@login_required(login_url='/s2ip/connecter')
 def importDb(request):
     if request.method == 'POST' and request.FILES['course_file'] and request.FILES['student_file']:
         course_file = request.FILES['course_file']
@@ -50,6 +53,7 @@ def importDb(request):
     template = loader.get_template('controlPanel/import.html')
     return HttpResponse(template.render({}, request))
 
+@login_required(login_url='/s2ip/connecter')
 def export_zip_file(List_courses, anonymous = False):
     """
     Download zip file with all courses in list_courses
@@ -87,6 +91,7 @@ def export_zip_file(List_courses, anonymous = False):
 
     return response
 
+@login_required(login_url='/s2ip/connecter')
 def exportDb(request):
 
     # List of all available courses
@@ -114,6 +119,7 @@ def exportDb(request):
     else:
         return HttpResponse(template.render(data, request))
 
+@login_required(login_url='/s2ip/connecter')
 def typeFormView(request, id_q = None):
     typeForm_list = TypeForm.objects.all()
     data = {}
@@ -144,7 +150,7 @@ def typeFormView(request, id_q = None):
     template = loader.get_template('controlPanel/survey.html')
     return HttpResponse(template.render(data, request))
 
-
+@login_required(login_url='/s2ip/connecter')
 def specific(request, type_request, format = None):
     item_list = []
 
@@ -182,7 +188,7 @@ def specific(request, type_request, format = None):
     template = loader.get_template('controlPanel/specific.html')
     return HttpResponse(template.render(data, request))
 
-
+@login_required(login_url='/s2ip/connecter')
 def question_home(request):
 
     questions = Question.objects.all()
@@ -199,7 +205,7 @@ def question_home(request):
     template = loader.get_template('controlPanel/questionsAll.html')
     return HttpResponse(template.render(data, request))
 
-
+@login_required(login_url='/s2ip/connecter')
 def question(request, id_q):
     template = loader.get_template('controlPanel/question.html')
     question = Question.objects.get(id = id_q)
@@ -245,3 +251,26 @@ def question(request, id_q):
         "max_frq": max_frq,
     }
     return HttpResponse(template.render(data, request))
+
+def connect(request):
+    controlPanel.models.create_admins()
+    logout(request)
+    username = password = ''
+    message = " Vous êtes actuellement déconnecté, connectez-vous pour profiter du site."
+    if request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_staff:
+                print(user)
+                print(type(user))
+                login(request, user)
+                message = "Vous êtes désormais connecté, selectionnez les onglets \
+                que vous souhaitez visiter."
+        else:
+            message = "Identifiant ou mot de passe incorrect ou vous ne disposez \
+            pas des droits suffisants."
+
+    template = loader.get_template('controlPanel/login.html')
+    return HttpResponse(template.render({"message": message}, request))

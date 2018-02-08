@@ -53,14 +53,14 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',    
+    'django.middleware.security.SecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'Click2Evaluate_server.urls'
@@ -141,7 +141,7 @@ REST_FRAMEWORK = {
     )
 }
 
-AUTHENTICATION_BACKENDS = ['api.authenticationBackend.Backend']   
+AUTHENTICATION_BACKENDS = ['api.authenticationBackend.Backend']
 
 # The URL of the LDAP server.
 LDAP_AUTH_URL = "ldap://trudaine.enpc.fr"

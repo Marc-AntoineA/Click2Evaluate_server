@@ -7,7 +7,7 @@ class IsAnswerFromStudent(permissions.BasePermission):
     """
 
     def has_object_permission(self, request, view, qwa):
-        # qwa is a QuestionWithAnswer objects
+        # qwa is a QuestionWithAnswer objectsTrue
         return request.user == qwa.survey.student.user
 
 class AreCoursesFromStudent(permissions.BasePermission):

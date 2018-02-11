@@ -51,7 +51,7 @@ class Question(models.Model):
     parentsQuestionsValue = models.IntegerField(default = 0)
 
     def __str__(self):
-        return self.label
+        return string(self.typeForm) + " : " + self.label
 
     def all_answers(self):
         """

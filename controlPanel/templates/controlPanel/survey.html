@@ -83,7 +83,6 @@
                 <b> Q{{ q.position }} </b> : {{ q.label }}{% if q.obligatory %}*{% endif %}
                   <ul>
                     <li> Titre : {{ q.title }} </li>
-                    <li> Résumé : {{ q.summary }} </li>
                     <li> Type : {{ q.type_question }} </li>
                     {% if q.type_question == 'select' or q.type_question == 'selectOne' %}
                       <li> Choix possibles :
@@ -104,7 +103,6 @@
                             <b> Si réponse {{ q2.parentsQuestionsValue }} </b> : {{ q2.label }}{% if q2.obligatory %}*{% endif %}
                               <ul>
                                 <li> Titre : {{ q2.title }} </li>
-                                <li> Résumé : {{ q2.summary }} </li>
                                 <li> Type : {{ q2.type_question }} </li>
                                 {% if q2.type_question == 'select' or q2.type_question == 'selectOne' %}
                                   <li> Choix possibles :

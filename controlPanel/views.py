@@ -53,7 +53,6 @@ def importDb(request):
     template = loader.get_template('controlPanel/import.html')
     return HttpResponse(template.render({}, request))
 
-@login_required(login_url='/s2ip/connecter')
 def export_zip_file(List_courses, anonymous = False):
     """
     Download zip file with all courses in list_courses

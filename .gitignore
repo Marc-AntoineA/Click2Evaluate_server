@@ -4,3 +4,5 @@
 media
 api/migrations
 python_env
+data
+db.sqlite3

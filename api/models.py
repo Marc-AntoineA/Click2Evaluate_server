@@ -51,7 +51,7 @@ class Question(models.Model):
     parentsQuestionsValue = models.IntegerField(default = 0)
 
     def __str__(self):
-        return string(self.typeForm) + " : " + self.label
+        return str(self.typeForm) + " : " + self.label
 
     def all_answers(self):
         """
@@ -306,13 +306,22 @@ def create_database():
 
                 # Add the groups
                 delegates_tab = line['delegates'].split(',')
-                for k in range(len(delegates_tab)):
+                nb_delegates = len(delegates_tab)
+                if nb_delegates == 1:
                     try:
-                        query_grp = Group.objects.get(course__id_course = id_course, number = k)
+                        query_grp = Group.objects.get(course__id_course = id_course, number = 0)
                     except Group.DoesNotExist:
                         query_stdt = Student.objects.get(ldap = delegates_tab[k])
-                        query_grp = Group(course = query_crse, delegate = query_stdt, number = k)
+                        query_grp = Group(course = query_crse, delegate = query_stdt, number = 0)
                         query_grp.save()
+                else:
+                    for k in range(len(delegates_tab)):
+                        try:
+                            query_grp = Group.objects.get(course__id_course = id_course, number = k + 1)
+                        except Group.DoesNotExist:
+                            query_stdt = Student.objects.get(ldap = delegates_tab[k])
+                            query_grp = Group(course = query_crse, delegate = query_stdt, number = k + 1)
+                            query_grp.save()
 
             # Link students and groups into surveys
             for line in d_students:

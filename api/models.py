@@ -275,13 +275,18 @@ def create_database():
                 email = line["MAIL"]
                 if type(ldap) == type(" ") and type(first_name) == type(" ") \
                     and type(last_name) == type(" ") and type(email) == type(" "):
-                    query_stdt = ""
+                    query_stdt = None
                     try:
                         query_stdt = Student.objects.get(ldap = ldap)
                     except Student.DoesNotExist:
-                        # password (here the last ldap) is not used in reality: it's useless.
-                        user = User(username = ldap, email = email, password = "my password")
-                        user.save()
+                        # password is not used in reality: it's useless.
+                        user = None
+                        try: 
+                            user = User.objects.get(username = ldap)
+                        except User.DoesNotExist:
+                            user = User(username = ldap, email = email, password = "my password")
+                            user.save()
+                            
                         query_stdt = Student(ldap = ldap, mail = email,
                             departement = query_dpt, user = user,
                             first_name = first_name, last_name = last_name)

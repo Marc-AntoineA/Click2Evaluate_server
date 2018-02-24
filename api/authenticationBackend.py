@@ -1,4 +1,7 @@
 from django.contrib.auth.models import User # For authentication
+from ldap3 import Server, Connection, ALL
+
+
 
 class Backend:
     def authenticate(self, request, username=None, password=None):

@@ -33,9 +33,7 @@ ALLOWED_HOSTS = ['149.202.63.91', '127.0.0.1']
 
 
 # Application definition
-CORS_ORIGIN_WHITELIST = (
-    'localhost:8100',
-)
+CORS_ORIGIN_ALLOW_ALL = True
 
 INSTALLED_APPS = [
     'corsheaders',

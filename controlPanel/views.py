@@ -10,6 +10,7 @@ import csv
 import io
 import tarfile
 import controlPanel.models
+import pandas as pd
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -53,15 +54,22 @@ def importDb(request):
     template = loader.get_template('controlPanel/import.html')
     return HttpResponse(template.render({}, request))
 
+def convertCSVToXLSX(name, anonymous):
+    df = pd.read_csv(name + ".csv", sep=",")
+    col_freeze = 4
+    if anonymous:
+        col_freeze = 2
+    df.to_excel(name + ".xlsx",'Resultats', freeze_panes=(1, col_freeze), index=False)
+
 def export_zip_file(List_courses, anonymous = False):
     """
     Download zip file with all courses in list_courses
     e.g. list_courses = ['TDLOG', 'O2IMI']
     """
     prefix = "media/"
-    suffix = ".csv"
+    suffix = ""
     if anonymous:
-        suffix = "_anonyme.csv"
+        suffix = "_anonyme"
 
     for id_course in List_courses:
         id_course.strip()
@@ -74,9 +82,10 @@ def export_zip_file(List_courses, anonymous = False):
         for s in surveys:
             answers_data.append(s.export(anonymous))
 
-        with open(prefix + id_course + suffix, 'w') as answers_file:
+        with open(prefix + id_course + suffix + ".csv", 'w') as answers_file:
             writer = csv.writer(answers_file)
             writer.writerows(answers_data)
+
 
     # Create the response and the tar file
     response = HttpResponse(content_type='application/x-gzip')
@@ -85,7 +94,8 @@ def export_zip_file(List_courses, anonymous = False):
     tarred = tarfile.open(fileobj=response, mode='w:gz')
 
     for id_course in List_courses:
-        tarred.add(prefix + id_course + suffix)
+        convertCSVToXLSX(prefix + id_course + suffix, anonymous)
+        tarred.add(prefix + id_course + suffix + ".xlsx")
     tarred.close()
 
     return response

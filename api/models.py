@@ -204,12 +204,15 @@ class QuestionWithAnswer(models.Model):
     answer = models.CharField(max_length = 400, blank = True, default ="")
 
     def __str__(self):
-        return str(self.question)
+        return str(survey.student) +  str(self.question)
 
     def export_answer(self):
         """
         Return an array containing the answer of the question =[booleans]> for 'select' and [X] for others
         """
+        if self.answer == "":
+            return [""]
+        
         if self.question.type_question == "select":
             choices = self.answer.split(';')
             ans = []
@@ -219,13 +222,14 @@ class QuestionWithAnswer(models.Model):
                 else:
                     ans.append('Non')
             return ans
+
         if self.question.type_question == "selectOne":
             return [self.question.type_data.split(";")[int(self.answer)]]
         return [self.answer]
 
 def get_departement(s):
     """
-    Return the firt word of s. E.g. "IMI - Finance" become "IMI" and "IMI-Finance" stay "IMI-Finance" (no space).
+    Return the first word of s. E.g. "IMI - Finance" become "IMI" and "IMI-Finance" stay "IMI-Finance" (no space).
     If s is "" or only wone word --> return ""
     """
     try:
@@ -281,12 +285,12 @@ def create_database():
                     except Student.DoesNotExist:
                         # password is not used in reality: it's useless.
                         user = None
-                        try: 
+                        try:
                             user = User.objects.get(username = ldap)
                         except User.DoesNotExist:
                             user = User(username = ldap, email = email, password = "my password")
                             user.save()
-                            
+
                         query_stdt = Student(ldap = ldap, mail = email,
                             departement = query_dpt, user = user,
                             first_name = first_name, last_name = last_name)

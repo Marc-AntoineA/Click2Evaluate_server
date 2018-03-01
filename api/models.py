@@ -20,9 +20,9 @@ class TypeForm(models.Model):
         """
         Return the head
         """
-        L = ["Cours", "Groupe", "Eleve", "Date"]
+        L = ["Cours", "Groupe", "Departement", "Eleve", "Date"]
         if anonymous:
-            L = ["Cours", "Groupe"]
+            L = ["Cours", "Groupe", "Departement"]
 
         questions = Question.objects.filter(typeForm = self)
         print(questions)
@@ -186,9 +186,9 @@ class Survey(models.Model):
         """
         L = []
         if anonymous:
-            L = [self.group.course.id_course, self.group.number]
+            L = [self.group.course.id_course, self.group.number, str(self.student.departement)]
         else:
-            L = [self.group.course.id_course, self.group.number, self.student.ldap, self.submissionDate]
+            L = [self.group.course.id_course, self.group.number, str(self.student.departement), self.student.ldap, self.submissionDate]
 
         if self.answered:
             answers = QuestionWithAnswer.objects.filter(survey = self).order_by('question__position')
@@ -212,7 +212,7 @@ class QuestionWithAnswer(models.Model):
         """
         if self.answer == "":
             return [""]
-        
+
         if self.question.type_question == "select":
             choices = self.answer.split(';')
             ans = []

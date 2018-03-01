@@ -56,9 +56,9 @@ def importDb(request):
 
 def convertCSVToXLSX(name, anonymous):
     df = pd.read_csv(name + ".csv", sep=",")
-    col_freeze = 4
+    col_freeze = 5
     if anonymous:
-        col_freeze = 2
+        col_freeze = 3
     df.to_excel(name + ".xlsx",'Resultats', freeze_panes=(1, col_freeze), index=False)
 
 def export_zip_file(List_courses, anonymous = False):

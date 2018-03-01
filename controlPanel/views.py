@@ -73,7 +73,6 @@ def export_zip_file(List_courses, anonymous = False):
 
     for id_course in List_courses:
         id_course.strip()
-        print(id_course)
         course = Course.objects.get(id_course = id_course)
         tF = course.typeForm
         surveys = Survey.objects.filter(group__course__id_course = id_course, answered = True).order_by("submissionDate")

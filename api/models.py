@@ -45,7 +45,7 @@ class Question(models.Model):
                 message='Veuillez choisir un type de question parmi select, selectOne, inline ou text',
             ),
         ])
-    type_data = models.CharField(max_length = 400, blank = True)
+    type_data = models.CharField(max_length = 800, blank = True)
     isSub = models.BooleanField(max_length = 50)
     parentsQuestionPosition = models.IntegerField(default = 0)
     parentsQuestionsValue = models.IntegerField(default = 0)

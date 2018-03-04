@@ -24,7 +24,7 @@ class TypeForm(models.Model):
         if anonymous:
             L = ["Cours", "Groupe", "Departement"]
 
-        questions = Question.objects.filter(typeForm = self)
+        questions = Question.objects.filter(typeForm = self).order_by('position')
         print(questions)
         print(self)
         for q in questions:
@@ -42,7 +42,7 @@ class Question(models.Model):
         validators=[
             RegexValidator(
                 regex='^(select|selectOne|inline|text|number)$',
-                message='Veuillez choisir un type de question parmi select, selectOne, inline ou text',
+                message='Veuillez choisir un type de question parmi select, selectOne, inline, number ou text',
             ),
         ])
     type_data = models.CharField(max_length = 800, blank = True)
@@ -204,7 +204,7 @@ class QuestionWithAnswer(models.Model):
     answer = models.CharField(max_length = 400, blank = True, default ="")
 
     def __str__(self):
-        return str(survey.student) +  str(self.question)
+        return str(self.survey.student) +  str(self.question)
 
     def export_answer(self):
         """

@@ -3,3 +3,4 @@ django-rest-framework
 django-cors-headers
 pandas
 mod_wsgi
+openpyxl

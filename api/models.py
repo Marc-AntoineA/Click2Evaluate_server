@@ -35,7 +35,7 @@ class TypeForm(models.Model):
 class Question(models.Model):
     typeForm = models.ForeignKey(TypeForm, on_delete = models.CASCADE)
     position = models.IntegerField()
-    title = models.CharField(max_length = 100)
+    title = models.CharField(max_length = 100, blank = True)
     label = models.CharField(max_length = 300)
     obligatory = models.BooleanField(default = False)
     type_question = models.CharField(max_length = 50,

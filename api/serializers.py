@@ -5,13 +5,41 @@ from .models import Student, Course, Group, TypeForm, Survey, Question, Question
 
 class QuestionSerializer(serializers.ModelSerializer):
     """
-    Serializer for model Question
+    Serializer for model Question used to read typeForm
     """
-    
+
     class Meta:
         model = Question
-        fields = ('id','position', 'label', 'obligatory', 'title', 'type_question',
+        fields = ('id','position', 'label', 'obligatory', 'type_question',
          'type_data', 'isSub', 'parentsQuestionPosition', 'parentsQuestionsValue')
+
+class QuestionUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for model Question used to post typeForm
+    """
+    typeForm = serializers.CharField(source = 'typeForm.name')
+
+    class Meta:
+        model = Question
+        fields = ('position', 'label', 'obligatory', 'type_question',
+         'type_data', 'isSub', 'parentsQuestionPosition', 'parentsQuestionsValue', 'typeForm')
+
+    def create(self, validated_data):
+        vd = validated_data
+        print(vd)
+        typeForm = None
+        try:
+            typeForm = TypeForm.objects.get(name = vd["typeForm"]["name"])
+        except TypeForm.DoesNotExist:
+            typeForm = TypeForm(name = vd["typeForm"]["name"])
+            typeForm.save()
+
+        question = Question(position = vd["position"], label = vd["label"],\
+            obligatory = vd["obligatory"], type_question = vd["type_question"],\
+            isSub = vd["isSub"], parentsQuestionPosition = vd["parentsQuestionPosition"],\
+            parentsQuestionsValue = vd["parentsQuestionsValue"], typeForm = typeForm)
+        question.save()
+        return question
 
 class StudentSerializer(serializers.ModelSerializer):
     """
@@ -68,3 +96,12 @@ class QuestionWithAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model= QuestionWithAnswer
         fields = ('answer',)
+
+class TypeFormSerializer(serializers.ModelSerializer):
+    """
+    Serializer for model TF
+    """
+
+    class Meta:
+        model = TypeForm
+        fields = ('name', 'description')

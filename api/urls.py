@@ -8,6 +8,7 @@ urlpatterns = [
     path('courses/<str:pk>/', views.SurveyStudentList.as_view()), #areCoursesFromStudent
     path('typeForm/<str:name>/', views.TypeForm_questions.as_view()),  # isAuthenticated
     path('answer/<int:surveyId>/<int:questionId>/', views.Answers.as_view()), #isAnswerFromStudent
+    path('typeForm/modify/<str:name>/', views.TypeForm_general.as_view()),
     #path('student/<str:name>/', views.ExistsStudent.as_view()),
     path('connect/', viewsAuth.obtain_auth_token),
 ]

@@ -53,6 +53,9 @@
       <div class="row">
         <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
           <ul class="nav nav-pills flex-column">
+
+            <li><b> <a class="nav-link" href="{% url 'controlPanel:typeFormEdit' current_id %}"> Accéder à l'outil de modification </a></b></li>
+
             {% for s in typeForm_list %}
             <li class="nav-item">
               <a class="nav-link {% if current_id == s.id %} active {% endif %}"
@@ -65,13 +68,14 @@
         </nav>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-          <h1> Panneau d'administration de l'évaluation des cours </h1>
+
+          <h1> Gestion des questionnaires </h1>
 
 
 
           {% if current_name %}
-            <h2> Administration du questionnaire : <b> {{ current_name }} </b></h2>
-              <i><p> Pour rajouter ou modifier des questions, veuillez vous rendre à la page suivante : <a href="/admin/"> Panneau d'administration </a> </p></i>
+            <h2> {{ current_name }} </h2>
+
               <p> <i> {{ current_description }} </i> </p>
 
               <p> * : Question obligatoire </p>

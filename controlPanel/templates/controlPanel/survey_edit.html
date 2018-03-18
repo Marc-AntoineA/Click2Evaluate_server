@@ -1,0 +1,132 @@
+{% load static %}
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link href="{% static 'controlPanel/style.css' %}" rel="stylesheet">
+    <link href="{% static 'controlPanel/form.css' %}" rel="stylesheet">
+    <title> Éval'Ponts </title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="{% url 'controlPanel:home' %}"> Éval'Ponts </a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'controlPanel:generalView' %}"> Vue d'ensemble </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'controlPanel:exportDb' %}"> Exporter les réponses </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'controlPanel:importDb' %}"> Importer la base de données </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'controlPanel:typeForm' %}"> Gestion des questionnaires <span class="sr-only">(current)</span></a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'controlPanel:project' %}"> Le projet </a>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'controlPanel:connect' %}"> Se déconnecter </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+          <b><a href="{% url 'controlPanel:typeFormSpecific' current_id %}" > Accéder à l'outil de visualisation </a></b>
+          <div class="toolbar-nav">
+            <button type="button" data-toggle="tooltip"
+              title="Enregistrer le questionnaire"
+              onclick="save()">
+              <img src="{% static 'controlPanel/icons/save.png' %}" class="icon"/>
+            </button>
+
+            <a href="{% url 'controlPanel:typeFormEdit' current_id %}?action=copy">
+              <button type="button" data-toggle="tooltip" title="Créer une copie de ce questionnaire">
+                <img src="{% static 'controlPanel/icons/copy.png' %}" class="icon"/>
+              </button>
+            </a>
+
+            <a href="{% url 'controlPanel:typeFormEdit' current_id %}?action=delete">
+              <button type="button" data-toggle="tooltip" title="Supprimer ce questionnaire">
+                <img src="{% static 'controlPanel/icons/delete.png' %}" class="icon"/>
+              </button>
+            </a>
+
+            <button type="button" data-toggle="tooltip"
+              title="Ajouter une question (à la fin)"
+              onclick="event_add_question_end(this)">
+              <img src="{% static 'controlPanel/icons/add.png' %}" class="icon"/>
+            </button>
+
+            <ul class="nav nav-pills flex-column">
+
+              {% for s in typeForm_list %}
+              <li class="nav-item">
+                <a class="nav-link {% if current_id == s.id %} active {% endif %}"
+                href="{% url 'controlPanel:typeFormEdit' s.id %}">
+                {{ s.name }}
+                  {% if current.id == s.id %} <span class="sr-only">(current)</span> {% endif %}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </nav>
+
+        <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+          <h1> Gestion des questionnaires </h1>
+
+          <div>
+            <label class="legend"> Titre du questionnaire : </label>
+            <input type="text" id="form-label" class ="label" value = "{{ current_name }}">
+          </div>
+
+          <div>
+            <label class="legend align-up">Courte description</label>
+            <textarea id="summary" class="description"> {{ current_description }} </textarea>
+          </div>
+
+
+          <div id="form">
+          </div>
+
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      DJANGO_STATIC_URL = '{{ STATIC_URL }}controlPanel/';
+      console.log(DJANGO_STATIC_URL);
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <script src="{% static 'controlPanel/js/request.js' %}"></script>
+    <script src="{% static 'controlPanel/js/display.js' %}"></script>
+    <script src="{% static 'controlPanel/js/edit_question.js' %}"></script>
+    <script src="{% static 'controlPanel/js/dom_to_json.js' %}"></script>
+    <script src="{% static 'controlPanel/js/main.js' %}"></script>
+  </body>
+</html>

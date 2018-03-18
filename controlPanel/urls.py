@@ -15,6 +15,8 @@ urlpatterns = [
     path('projet/', views.project, name = "project"),
     path('questionnaires/', views.typeFormView, name = "typeForm"),
     path('questionnaires/<int:id_q>/', views.typeFormView, name="typeFormSpecific"),
+    path('questionnaires/edit/<int:id_q>/', views.typeFormEditView, name="typeFormEdit"),
+    path('questionnaires/edit/', views.typeFormEditView, name="typeFormEditGeneral"),
     path('connecter/', views.connect, name = "connect"),
 ]
 

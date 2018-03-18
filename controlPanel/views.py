@@ -11,6 +11,8 @@ import io
 import tarfile
 import controlPanel.models
 import pandas as pd
+from Click2Evaluate_server.settings import *
+
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -150,6 +152,7 @@ def typeFormView(request, id_q = None):
             "typeForm_list": typeForm_list,
             "main_questions": main_questions,
         }
+        print(data)
     else:
         data = {
             "typeForm_list": typeForm_list,
@@ -282,3 +285,55 @@ def connect(request):
 
     template = loader.get_template('controlPanel/login.html')
     return HttpResponse(template.render({"message": message}, request))
+
+@login_required(login_url='/s2ip/connecter')
+def typeFormEditView(request, id_q = None):
+    typeForm_list = TypeForm.objects.all()
+    data = {}
+
+    if 'action' in request.GET:
+        action = request.GET['action']
+        if action == "delete":
+            print("delete")
+            TypeForm.objects.get(id = id_q).delete()
+            id_q = None
+
+        if action == "copy":
+            print("copy")
+            # copy the tf
+            tf = TypeForm.objects.get(id = id_q)
+            tf.name = tf.name + " (copie)"
+            tf.id = None
+            tf.save()
+            typeForm_list = TypeForm.objects.all()
+
+            # copy all the questions
+            questions = Question.objects.filter(typeForm__id = id_q)
+            for q in questions:
+                q.id = None
+                q.typeForm = tf
+                q.save()
+            id_q = tf.id
+
+    if id_q == None:
+        if len(typeForm_list) > 0:
+            id_q = list(typeForm_list)[0].id
+        else:
+            tf = TypeForm(name = "Votre nouveau questionaire", description = "")
+            tf.save()
+            id_q = tf.id
+            typeForm_list = TypeForm.objects.all()
+
+
+    current = TypeForm.objects.get(id = id_q)
+    data = {
+        "current_id": current.id,
+        "current_name": current.name,
+        "current_description": current.description,
+        "typeForm_list": typeForm_list,
+        "STATIC_URL": STATIC_URL,
+    }
+    print(data)
+
+    template = loader.get_template('controlPanel/survey_edit.html')
+    return HttpResponse(template.render(data, request))

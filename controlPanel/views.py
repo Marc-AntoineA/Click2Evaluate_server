@@ -176,6 +176,7 @@ def specific(request, type_request, format = None):
             "label": c.label,
             "nb_students": c.nb_students(),
             "rate_answer": round(c.nb_answers()/float(c.nb_students())*100, 1),
+            "departement": c.departement,
         } for c in courses if c.nb_students() > 0]
 
 

@@ -96,6 +96,11 @@
                   <th scope="col" data-sortable="true" data-field="id">
                     {% if type_request == 'module'%} Module {% else %} Département {% endif %}
                   </th>
+                  {% if type_request == 'module'%}
+                    <th scope="col" data-sortable="true" data-field="dpt">
+                      Département de rattachement
+                    </th>
+                  {% endif %}
                   <th scope="col" data-sortable="true" data-field="number"> Nombre d'élèves inscrits </th>
                   <th scope="col" data-sortable="true" data-field="rate"> Taux de réponse </th>
                 </tr>
@@ -104,6 +109,11 @@
                 {% for item in item_list %}
                 <tr>
                   <td> {{ item.label }} </td>
+                  {% if type_request == 'module'%}
+                    <td>
+                      {{ item.departement }}
+                    </td>
+                  {% endif %}
                   <td> {{ item.nb_students }} </td>
                   <td> {{ item.rate_answer }}% </td>
                 </tr>

@@ -93,7 +93,9 @@
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
           <h1> Gestion des questionnaires </h1>
-
+          <div class="hidden" id="user">{{ user }}</div>
+          <div class="hidden" id="token">{{ token }}</div>
+          <div class="hidden" id="server">{{ server }}</div>
           <div>
             <label class="legend"> Titre du questionnaire : </label>
             <input type="text" id="form-label" class ="label" value = "{{ current_name }}">

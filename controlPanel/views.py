@@ -13,7 +13,7 @@ import controlPanel.models
 import pandas as pd
 from Click2Evaluate_server.settings import *
 
-
+from rest_framework.authtoken.models import Token
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
@@ -133,30 +133,35 @@ def exportDb(request):
 def typeFormView(request, id_q = None):
     typeForm_list = TypeForm.objects.all()
     data = {}
+    current = None
+    if id_q == None:
 
-    if id_q != None:
-        current = TypeForm.objects.get(id = id_q)
-        questions = Question.objects.filter(typeForm = current).order_by('position')
-        for q in questions:
-            q.data = q.type_data.split(";")
-        #question
-        main_questions = [q for q in questions if not(q.isSub)]
-        for q in main_questions:
-            q.sub_questions = list(Question.objects.filter(isSub = True, parentsQuestionPosition = q.position))
-            q.had_sub_questions = len(q.sub_questions) > 0
+        if len(typeForm_list) > 0:
+            id_q = list(typeForm_list)[0].id
+        else:
+            tf = TypeForm(name = "Votre nouveau questionaire", description = "")
+            tf.save()
+            id_q = tf.id
+            typeForm_list = TypeForm.objects.all()
 
-        data = {
-            "current_id": current.id,
-            "current_name": current.name,
-            "current_description": current.description,
-            "typeForm_list": typeForm_list,
-            "main_questions": main_questions,
-        }
-        print(data)
-    else:
-        data = {
-            "typeForm_list": typeForm_list,
-        }
+    current = TypeForm.objects.get(id = id_q)
+    questions = Question.objects.filter(typeForm = current).order_by('position')
+    for q in questions:
+        q.data = q.type_data.split(";")
+    #question
+    main_questions = [q for q in questions if not(q.isSub)]
+    for q in main_questions:
+        q.sub_questions = list(Question.objects.filter(isSub = True, parentsQuestionPosition = q.position))
+        q.had_sub_questions = len(q.sub_questions) > 0
+
+    data = {
+        "current_id": current.id,
+        "current_name": current.name,
+        "current_description": current.description,
+        "typeForm_list": typeForm_list,
+        "main_questions": main_questions,
+    }
+    print(data)
 
     template = loader.get_template('controlPanel/survey.html')
     return HttpResponse(template.render(data, request))
@@ -319,11 +324,17 @@ def typeFormEditView(request, id_q = None):
         if len(typeForm_list) > 0:
             id_q = list(typeForm_list)[0].id
         else:
-            tf = TypeForm(name = "Votre nouveau questionaire", description = "")
+            tf = TypeForm(name = "Votre nouveau questionnaire", description = "")
             tf.save()
             id_q = tf.id
+            print(id_q)
             typeForm_list = TypeForm.objects.all()
-
+    token = None
+    try:
+        token = Token.objects.get(user = request.user)
+    except Token.DoesNotExist:
+        token = Token.objects.create(user= request.user)
+        token.save()
 
     current = TypeForm.objects.get(id = id_q)
     data = {
@@ -332,8 +343,9 @@ def typeFormEditView(request, id_q = None):
         "current_description": current.description,
         "typeForm_list": typeForm_list,
         "STATIC_URL": STATIC_URL,
+        "user": request.user,
+        "token": token
     }
-    print(data)
 
     template = loader.get_template('controlPanel/survey_edit.html')
     return HttpResponse(template.render(data, request))

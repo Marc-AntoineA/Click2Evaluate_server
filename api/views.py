@@ -4,18 +4,19 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404, HttpResponse
-from .models import Student, Course, Survey, TypeForm, Group, Question, QuestionWithAnswer, Departement
-from .serializers import StudentSerializer, CourseSerializer,\
-    SurveySerializer, GroupSerializer, QuestionSerializer,\
-    QuestionWithAnswerSerializer, QuestionUpdateSerializer,\
-    TypeFormSerializer
+from .models import *
+from .serializers import *
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework import permissions
 
+from django.template import loader
+
 from .permissions import IsAnswerFromStudent, AreCoursesFromStudent, IsAdminOrReadOnly
 
-# ListAPIView provides a generic view for read-only
-# represent a collection of model instances
+def home(request):
+    template = loader.get_template('api/home.html')
+    return HttpResponse(template.render({}, request))
+
 
 class SurveyStudentList(APIView):
     """
@@ -47,7 +48,7 @@ class TypeForm_questions(APIView):
 
     def post(self, request, name, format = None):
         self.check_permissions(request)
-        
+
         Question.objects.filter(typeForm__name = name).delete()
 
         serializer = QuestionUpdateSerializer(data = request.data, many = True)

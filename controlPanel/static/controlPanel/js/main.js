@@ -8,6 +8,10 @@
 
 //1. Get the label of the form
 var previous_form_label = document.getElementById("form-label").value;
+const server = "/api/typeForm/";
+const user = document.getElementById("user").innerHTML;
+const token = document.getElementById("token").innerHTML;
+
 console.log("form_label ", previous_form_label)
 console.log(DJANGO_STATIC_URL);
 //2. Get the form
@@ -28,5 +32,8 @@ form_data.then(form => {
 });
 
 function save(){
-  upload_general_informations().then(() => {upload_form();});
+  upload_general_informations().then(() => {
+    upload_form().then(() => location.reload());
+  });
+
 }

@@ -1,9 +1,5 @@
 'use strict'
 
-const server = "http://127.0.0.1:8000/api/typeForm/";
-const user = "marc-antoine.auge@enpc.fr";
-const token = "a4ad2b7c596b935bc51c885d2bec87dc03203e61";
-
 // functions to download and upload a typeform
 function get_form(form_label){
   return new Promise((resolve, reject) => {

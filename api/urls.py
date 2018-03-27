@@ -3,8 +3,10 @@ from api import views
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.authtoken import views as viewsAuth
 
+app_name = "api"
 urlpatterns = [
     #path('students/', views.StudentsList.as_view()),
+    path('', views.home, name="home"),
     path('courses/<str:pk>/', views.SurveyStudentList.as_view()), #areCoursesFromStudent
     path('typeForm/<str:name>/', views.TypeForm_questions.as_view()),  # isAuthenticated
     path('answer/<int:surveyId>/<int:questionId>/', views.Answers.as_view()), #isAnswerFromStudent

@@ -112,6 +112,7 @@ class Course(models.Model):
     commissionsDate = models.DateTimeField()        # last day to submit a new answer
     availableDate = models.DateTimeField()          # first day to submnit a new answer (e.g. date of the exam)
     typeForm = models.ForeignKey(TypeForm, on_delete = models.CASCADE)  #which form is used for that course ?
+    departement = models.ForeignKey(Departement, on_delete = models.CASCADE)
 
     def __str__(self):
         return self.id_course + " : " + self.label
@@ -301,16 +302,33 @@ def create_database():
                 #Add the course if necessary
                 id_course = line["id_course"]
                 query_crse = ""
+                print(line)
+                print(id_course)
                 try:
                     query_crse = Course.objects.get(id_course = id_course)
 
                 except Course.DoesNotExist:
                     # Add the course
-                    query_tF = TypeForm.objects.get(name = line['typeForm'])
+                    query_tF = None
+                    try:
+                        query_tF = TypeForm.objects.get(name = line['typeForm'])
+                    except TypeForm.DoesNotExist:
+                        query_tF = TypeForm(name = line['typeForm'])
+                        query_tF.save()
+
+                    query_dpt = None
+                    dpt = get_departement(line["departement"])
+                    try:
+                        query_dpt = Departement.objects.get(name = dpt)
+
+                    except Departement.DoesNotExist:
+                        query_dpt = Departement(name = dpt)
+                        query_dpt.save()
+
                     query_crse = Course(id_course = id_course, label = line['label'],
                                         commissionsDate = line['commissionsDate'],
                                         availableDate = line['availableDate'],
-                                        typeForm = query_tF)
+                                        typeForm = query_tF, departement = query_dpt)
                     query_crse.save()
 
                 # Add the groups

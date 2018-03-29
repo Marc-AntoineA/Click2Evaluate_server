@@ -88,18 +88,18 @@ def export_zip_file(List_courses, anonymous = False):
             writer.writerows(answers_data)
 
 
-    # Create the response and the tar file
-    response = HttpResponse(content_type='application/x-gzip')
-    name_tar = "export_reponses"
-    response['Content-Disposition'] = 'attachment; filename= Export_reponses'  + suffix + '.tar.gz'
-    tarred = tarfile.open(fileobj=response, mode='w:gz')
+    with open("temp.zip", 'wb') as temp:
+        archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED)
 
-    for id_course in List_courses:
-        convertCSVToXLSX(prefix + id_course + suffix, anonymous)
-        tarred.add(prefix + id_course + suffix + ".xlsx")
-    tarred.close()
+        for id_course in List_courses:
+            convertCSVToXLSX(prefix + id_course + suffix, anonymous)
+            archive.write(prefix + id_course + suffix + ".xlsx")
+        archive.close()
 
-    return response
+        wrapper = open("temp.zip", "rb")
+        response = HttpResponse(wrapper, content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename= Export_reponses'  + suffix + '.zip'
+        return response
 
 @login_required(login_url='/s2ip/connecter')
 def exportDb(request):

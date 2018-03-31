@@ -177,6 +177,7 @@ def specific(request, type_request, format = None):
             "nb_students": c.nb_students(),
             "rate_answer": round(c.nb_answers()/float(c.nb_students())*100, 1),
             "departement": c.departement,
+            "list_emails": ','.join(c.get_list_emails()),
         } for c in courses if c.nb_students() > 0]
 
 
@@ -185,21 +186,17 @@ def specific(request, type_request, format = None):
         item_list = [{
             "label": d.name,
             "nb_students": d.nb_students(),
-            "rate_answer": round(d.nb_answers()/float(d.nb_surveys())*100, 1)
+            "rate_answer": round(d.nb_answers()/float(d.nb_surveys())*100, 1),
+            "list_emails": ','.join(d.get_list_emails()),
         } for d in departements if d.nb_surveys() > 0]
 
     else:
         raise Http404
 
-    # Useless
-    f = (lambda x: x["label"])
-
-    reverse = False
-
-    item_list.sort(key = f, reverse = reverse)
     data = {
         "item_list": item_list,
         "type_request": type_request,
+        "list_emails": ','.join(get_list_emails()),
     }
 
     template = loader.get_template('controlPanel/specific.html')

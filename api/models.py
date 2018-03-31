@@ -92,6 +92,13 @@ class Departement(models.Model):
         """
         return len(Survey.objects.filter(student__departement = self, answered = True))
 
+    def get_list_emails(self):
+        """
+        Return the list of all emails of student who don't answered at least one course
+        """
+        surveys = Survey.objects.filter(student__departement = self, answered = False)
+        return [s.student.mail for s in surveys]
+
 class Student(models.Model):
 
     # 'user' used for authentification
@@ -142,6 +149,13 @@ class Course(models.Model):
         Return the number of answers for that course
         """
         return sum([g.nb_answers() for g in Group.objects.filter(course = self)])
+
+    def get_list_emails(self):
+        """
+        Return the list of emails of people who don't already evaluate this course
+        """
+        surveys = Survey.objects.filter(group__course = self, answered = False)
+        return [s.student.mail for s in surveys]
 
 class Group(models.Model):
     number = models.IntegerField(default = 0)
@@ -227,6 +241,14 @@ class QuestionWithAnswer(models.Model):
         if self.question.type_question == "selectOne":
             return [self.question.type_data.split(";")[int(self.answer)]]
         return [self.answer]
+
+def get_list_emails():
+    """
+    Return the list of emails from student who don't answered at least one survey
+    """
+    surveys = Survey.objects.filter(answered = False)
+    return list(set([s.student.mail for s in surveys])) # list and set to avoid repetitions
+
 
 def get_departement(s):
     """

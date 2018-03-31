@@ -6,6 +6,8 @@ api/migrations
 python_env
 data
 db.sqlite3
-controlPanel/__pycache__
-Click2Evaluate_server/__pycache__/
-api/__pycache__
+controlPanel/__pycache__/*
+Click2Evaluate_server/__pycache__/*
+api/__pycache__/*
+
+

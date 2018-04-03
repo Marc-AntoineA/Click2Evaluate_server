@@ -178,6 +178,7 @@ def specific(request, type_request, format = None):
             "rate_answer": round(c.nb_answers()/float(c.nb_students())*100, 1),
             "departement": c.departement,
             "list_emails": ','.join(c.get_list_emails()),
+            "date": c.commissionsDate.strftime("%Y-%m-%d %H:%M:%S"),
         } for c in courses if c.nb_students() > 0]
 
 

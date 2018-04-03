@@ -84,11 +84,17 @@
 
           <h2> Données relatives aux {% if type_request == 'module'%} modules {% else %} départements {% endif %} </h2>
 
+          Vous pouvez, sur cette page, faire des relances par mail personnalisées
+          en cliquant sur les liens sur chaque ligne ou alors pour tous les élèves
+          à qui il reste au moins un module à évaluer en cliquant sur le lien suivant :
+          <a onclick="send_email('{{ list_emails }}')" href="#">Envoyer le mail</a>
+
+
           {% if type_request == 'departement'%}
-            <p> <b> Attention </b>, on s'intéresse ici aux département de rattachement des élèves et non des cours. </p>
+            <p> <b> Attention </b> on s'intéresse ici aux département de rattachement des élèves et non des cours. </p>
           {% else %}
-              <p> <b> Attention </b>, les départements sont ici les départements de rattachement des cours et non pas des élèves. </p>
-              <b> Attention </b>, ne sont affichés que les modules actuellement disponibles à l'évaluation
+              <p> <b> Attention </b> les départements sont ici les départements de rattachement des cours et non pas des élèves. </p>
+              <b> Attention </b> ne sont affichés que les modules actuellement disponibles à l'évaluation
            {% endif %}
             <table class="table" data-toggle="table" data-pagination="true" data-search="true" data-page-size="25">
               <thead class="thead-light">
@@ -108,10 +114,20 @@
               <tbody>
                 {% for item in item_list %}
                 <tr>
-                  <td> {{ item.label }} </td>
                   {% if type_request == 'module'%}
+                  <td>
+                    <a onclick='send_email("{{ item.list_emails }}", "{{ item.label }}", "{{ item.date }}")' href="#">
+                      {{ item.label }}
+                    </a>
+                  </td>
+                  <td>
+                    item.departement
+                  </td>
+                  {% else %}
                     <td>
-                      {{ item.departement }}
+                      <a onclick='send_email("{{ item.list_emails }}")' href="#">
+                        {{ item.label }}
+                      </a>
                     </td>
                   {% endif %}
                   <td> {{ item.nb_students }} </td>
@@ -133,5 +149,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/locale/bootstrap-table-fr-BE.js"></script>
+    <script src="{% static 'controlPanel/js/send_emails.js' %}"></script>
   </body>
 </html>
